@@ -53584,21 +53584,14 @@ utils.intFromLE = intFromLE;
 module.exports={
   "_args": [
     [
-      {
-        "raw": "elliptic@^6.0.0",
-        "scope": null,
-        "escapedName": "elliptic",
-        "name": "elliptic",
-        "rawSpec": "^6.0.0",
-        "spec": ">=6.0.0 <7.0.0",
-        "type": "range"
-      },
-      "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign"
+      "elliptic@^6.0.0",
+      "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
   "_id": "elliptic@6.3.2",
   "_inCache": true,
+  "_installable": true,
   "_location": "/elliptic",
   "_nodeVersion": "6.3.0",
   "_npmOperationalInternal": {
@@ -53606,17 +53599,16 @@ module.exports={
     "tmp": "tmp/elliptic-6.3.2.tgz_1473938837205_0.3108903462998569"
   },
   "_npmUser": {
-    "name": "indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "indutny"
   },
   "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "elliptic@^6.0.0",
-    "scope": null,
-    "escapedName": "elliptic",
     "name": "elliptic",
+    "raw": "elliptic@^6.0.0",
     "rawSpec": "^6.0.0",
+    "scope": null,
     "spec": ">=6.0.0 <7.0.0",
     "type": "range"
   },
@@ -53628,10 +53620,10 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign",
+  "_where": "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign",
   "author": {
-    "name": "Fedor Indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "Fedor Indutny"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
@@ -53678,8 +53670,8 @@ module.exports={
   "main": "lib/elliptic.js",
   "maintainers": [
     {
-      "name": "indutny",
-      "email": "fedor@indutny.com"
+      "email": "fedor@indutny.com",
+      "name": "indutny"
     }
   ],
   "name": "elliptic",

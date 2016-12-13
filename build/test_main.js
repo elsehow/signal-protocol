@@ -59590,21 +59590,14 @@ utils.intFromLE = intFromLE;
 module.exports={
   "_args": [
     [
-      {
-        "raw": "elliptic@^6.0.0",
-        "scope": null,
-        "escapedName": "elliptic",
-        "name": "elliptic",
-        "rawSpec": "^6.0.0",
-        "spec": ">=6.0.0 <7.0.0",
-        "type": "range"
-      },
-      "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign"
+      "elliptic@^6.0.0",
+      "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
   "_id": "elliptic@6.3.2",
   "_inCache": true,
+  "_installable": true,
   "_location": "/elliptic",
   "_nodeVersion": "6.3.0",
   "_npmOperationalInternal": {
@@ -59612,17 +59605,16 @@ module.exports={
     "tmp": "tmp/elliptic-6.3.2.tgz_1473938837205_0.3108903462998569"
   },
   "_npmUser": {
-    "name": "indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "indutny"
   },
   "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "elliptic@^6.0.0",
-    "scope": null,
-    "escapedName": "elliptic",
     "name": "elliptic",
+    "raw": "elliptic@^6.0.0",
     "rawSpec": "^6.0.0",
+    "scope": null,
     "spec": ">=6.0.0 <7.0.0",
     "type": "range"
   },
@@ -59634,10 +59626,10 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign",
+  "_where": "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign",
   "author": {
-    "name": "Fedor Indutny",
-    "email": "fedor@indutny.com"
+    "email": "fedor@indutny.com",
+    "name": "Fedor Indutny"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
@@ -59684,8 +59676,8 @@ module.exports={
   "main": "lib/elliptic.js",
   "maintainers": [
     {
-      "name": "indutny",
-      "email": "fedor@indutny.com"
+      "email": "fedor@indutny.com",
+      "name": "indutny"
     }
   ],
   "name": "elliptic",
@@ -69700,7 +69692,7 @@ function testPreKeyStore(store) {
       });
       it('returns undefined for prekeys that do not exist', function(done) {
         var address = new SignalProtocolAddress(number, 2);
-        return store.loadPreKey(2).then(function(key) {
+        store.loadPreKey(2).then(function(key) {
           assert.isUndefined(key);
         }).then(done,done);
       });
@@ -69817,7 +69809,7 @@ describe('SessionBuilder', function() {
         var bobSessionCipher = new SessionCipher(bobStore, ALICE_ADDRESS);
 
         it('creates a session', function(done) {
-            return aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
+            aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
                 assert.isDefined(record);
                 var sessionRecord = SessionRecord.deserialize(record);
                 assert.isTrue(sessionRecord.haveOpenSession());
@@ -70247,7 +70239,7 @@ function testSessionStore(store) {
       var address = new SignalProtocolAddress(number, 1);
       it('stores sessions encoded as strings', function(done) {
         store.storeSession(address.toString(), testRecord).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
+          store.loadSession(address.toString()).then(function(record) {
             assert.strictEqual(record, testRecord);
           });
         }).then(done,done);
@@ -70273,7 +70265,7 @@ function testSessionStore(store) {
       });
       it('returns undefined for sessions that do not exist', function(done) {
         var address = new SignalProtocolAddress(number, 2);
-        return store.loadSession(address.toString()).then(function(record) {
+        store.loadSession(address.toString()).then(function(record) {
           assert.isUndefined(record);
         }).then(done,done);
       });
@@ -70285,7 +70277,7 @@ function testSessionStore(store) {
           store.storeSession(address.toString(), testRecord).then(done);
         });
         store.removeSession(address.toString()).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
+          store.loadSession(address.toString()).then(function(record) {
             assert.isUndefined(record);
           });
         }).then(done,done);
@@ -70304,7 +70296,7 @@ function testSessionStore(store) {
           });
         });
         promise.then(function() {
-          return store.removeAllSessions(number).then(function(record) {
+          store.removeAllSessions(number).then(function(record) {
             return Promise.all(devices.map(store.loadSession.bind(store))).then(function(records) {
               for (var i in records) {
                 assert.isUndefined(records[i]);
@@ -70428,7 +70420,7 @@ function testSignedPreKeyStore(store) {
       });
       it('returns undefined for prekeys that do not exist', function(done) {
         store.storeSignedPreKey(1, testKey).then(function() {
-          return store.loadSignedPreKey(2).then(function(key) {
+          store.loadSignedPreKey(2).then(function(key) {
             assert.isUndefined(key);
           });
         }).then(done,done);
@@ -70520,7 +70512,7 @@ describe("Crypto", function() {
       for (var i = 0; i < 10; i++)
         info[i] = 240 + i;
 
-      return Crypto.crypto.HKDF(IKM.buffer, salt.buffer, info.buffer).then(function(OKM){
+      Crypto.crypto.HKDF(IKM.buffer, salt.buffer, info.buffer).then(function(OKM){
         assertEqualArrayBuffers(OKM[0], T1);
         assertEqualArrayBuffers(OKM[1].slice(0, 10), T2);
       }).then(done).catch(done);
@@ -70583,7 +70575,7 @@ describe("Crypto", function() {
     describe("Ed25519Sign", function() {
       // Some self-generated test vectors
       it('works', function(done) {
-        return Crypto.crypto.Ed25519Sign(priv, msg).then(function(sigCalc) {
+        Crypto.crypto.Ed25519Sign(priv, msg).then(function(sigCalc) {
           assertEqualArrayBuffers(sig, sigCalc);
         }).then(done).catch(done);
       });
@@ -70602,7 +70594,7 @@ describe("Crypto", function() {
       });
 
       it("does not throw on good signature", function(done) {
-        return Crypto.crypto.Ed25519Verify(pub, msg, sig).then(done).catch(done);
+        Crypto.crypto.Ed25519Verify(pub, msg, sig).then(done).catch(done);
       });
     });
   }
