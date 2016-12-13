@@ -1,20 +1,15 @@
-#libsignal-protocol-javascript
+# signal-protocol
 
-Signal Protocol implementation for the browser based on
-[libsignal-protocol-java](https://github.com/WhisperSystems/libsignal-protocol-java).
-
-```
-/dist       # Distributables
-/build      # Intermediate build files
-/src        # JS source files
-/native     # C source files for curve25519
-/protos     # Protobuf definitions
-/test       # Tests
-```
-
-## Overview
 A ratcheting forward secrecy protocol that works in synchronous and
 asynchronous messaging environments.
+
+This repository is forked from WhisperSystem's own [https://github.com/WhisperSystems/libsignal-protocol-javascript](libsignal-protocol-javascript), modified to support node and the browser.
+
+You can read more about the signal protocol 
+(formerly axolotl for its self-healing abilities)
+[here](https://whispersystems.org/blog/advanced-ratcheting/).
+
+## Overview
 
 ### PreKeys
 
@@ -188,26 +183,8 @@ sessionCipher.decryptWhisperMessage(ciphertext).then(function(plaintext) {
 });
 ```
 
-## Contributing
-
-To compile curve25519 from C souce files in `/native`, install
-[emscripten](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html).
-Theen, build all the assets with
-
-```
-grunt build
-```
-
-To test, you can serve the project root and navigate to localhost:[port]/test to see the Mocha tests run.
-For the full CI experience, you will need an account with [Sauce Labs](https://saucelabs.com). 
-Get your username and API key, then set the appropriate envirionment variables to run the tests:
-
-```sh
-SAUCE_USERNAME="your-sauce-username" SAUCE_ACCESS_KEY="your-sauce-key" grunt test
-```
-
 ## License
 
-Copyright 2015-2016 Open Whisper Systems
-
-Licensed under the GPLv3: http://www.gnu.org/licenses/gpl-3.0.html
+I (elsehow) release copyright to
+Copyright 2015-2016 Open Whisper Systems 
+under the GPLv3: http://www.gnu.org/licenses/gpl-3.0.html
