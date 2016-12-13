@@ -1,22 +1,8 @@
-var CurveWrapper = require('./curve25519_wrapper.js');
-
-module.exports = function () {
-  self.onmessage = function(e) {
-    CurveWrapper.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
-      self.postMessage({ id: e.data.id, result: result });
-    }).catch(function(error) {
-      self.postMessage({ id: e.data.id, error: error.message });
-    });
-  };
+// load a workr routine and export it
+var workRoutine = require('./curve_work_routine.js');
+// our export is a function that takes `self`
+// `self` is passed in by webworkify.
+// https://github.com/substack/webworkify
+module.exports = function (self) {
+  workRoutine.apply(self);
 };
-
-// TODO how can we modify this to be compatible with what's given?
-// module.exports = function (self) {
-//   self.onmessage = function(e) {
-//     CurveWrapper.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
-//       self.postMessage({ id: e.data.id, result: result });
-//     }).catch(function(error) {
-//       self.postMessage({ id: e.data.id, error: error.message });
-//     });
-//   };
-// };

@@ -3,7 +3,7 @@ var util = require('util');
 
 // browserify should ignore the native polyfills
 var browserifyOpts = {
-  exclude: ['src/node_polyfills.js'],
+  exclude: ['src/node_polyfills.js']
 };
 
 module.exports = function(grunt) {
@@ -81,22 +81,22 @@ module.exports = function(grunt) {
       }
     },
     compile: {
-        curve25519_compiled: {
-            src_files: [
-              'native/ed25519/additions/*.c',
-              'native/curve25519-donna.c',
-              'native/ed25519/*.c',
-              'native/ed25519/sha512/sha2big.c'
-            ],
-            methods: [
-              'curve25519_donna',
-              'curve25519_sign',
-              'curve25519_verify',
-              'crypto_sign_ed25519_ref10_ge_scalarmult_base',
-              'sph_sha512_init',
-              'malloc'
-            ]
-        }
+      curve25519_compiled: {
+        src_files: [
+          'native/ed25519/additions/*.c',
+          'native/curve25519-donna.c',
+          'native/ed25519/*.c',
+          'native/ed25519/sha512/sha2big.c'
+        ],
+        methods: [
+          'curve25519_donna',
+          'curve25519_sign',
+          'curve25519_verify',
+          'crypto_sign_ed25519_ref10_ge_scalarmult_base',
+          'sph_sha512_init',
+          'malloc'
+        ]
+      }
     },
 
     jshint: {
@@ -114,28 +114,24 @@ module.exports = function(grunt) {
         ]
       }
     },
-    watch: {
-      jshint: {
-        files: ['<%= jshint.files %>', '.jshintrc'],
-        tasks: ['jshint']
-      },
-      // worker: {
-      //   files: ['<%= concat.worker.src %>'],
-      //   tasks: ['concat:worker']
-      // },
-      libsignalprotocol: {
-        files: ['<%= concat.libsignalprotocol.src %>'],
-        tasks: ['concat:libsignalprotocol']
-      },
-      protos: {
-        files: ['<%= concat.protos.src %>'],
-        tasks: ['concat:protos_concat']
-      },
-      protos_concat: {
-        files: ['<%= concat.protos_concat.src %>'],
-        tasks: ['concat:protos_concat']
-      }
-    },
+    // watch: {
+    //   jshint: {
+    //     files: ['<%= jshint.files %>', '.jshintrc'],
+    //     tasks: ['jshint']
+    //   },
+    //   libsignalprotocol: {
+    //     files: ['<%= concat.libsignalprotocol.src %>'],
+    //     tasks: ['concat:libsignalprotocol']
+    //   },
+    //   protos: {
+    //     files: ['<%= concat.protos.src %>'],
+    //     tasks: ['concat:protos_concat']
+    //   },
+    //   protos_concat: {
+    //     files: ['<%= concat.protos_concat.src %>'],
+    //     tasks: ['concat:protos_concat']
+    //   }
+    // },
 
     connect: {
       server: {
@@ -145,14 +141,32 @@ module.exports = function(grunt) {
         }
       }
     },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+          // captureFile: 'results.txt', // Optionally capture the reporter output to a file
+          // quiet: true, // Optionally suppress output to standard out (defaults to false)
+          // clearRequireCache: false, // Optionally clear the require cache before running tests (defaults to false)
+          // noFail: false // Optionally set to not fail on failed tests (will still fail on other errors)
+        },
+        src: ['test/main.js']
+      }
+    },
     'saucelabs-mocha': {
       all: {
         options: {
           urls: ['http://127.0.0.1:9998/test/index.html'],
-          build: process.env.TRAVIS_JOB_ID,
+          build: process.env.TRAVIS_JOB_ID || Date.now(),
+          public: 'public',
           browsers: [
-            { browserName: 'chrome', version: '41' },
-            { platform: 'linux', browserName: 'firefox', version: '34' }
+            { platform: 'linux',  browserName: 'chrome', version: '48' },
+            { platform: 'os x 10.11', browsername: 'chrome', version: '54.0' },
+            { platform: 'Windows 10', browserName: 'chrome', version:'54.0' },
+            { platform: 'linux', browserName: 'firefox', version: '45' },
+            { platform: 'OS X 10.11', browserName: 'firefox', version: '50.0' },
+            { platform: 'Windows 10', browserName: 'firefox', version:'50.0' },
+            // { platform: 'OS X 10.11', browserName: 'safari', version: '10.0' },
           ],
           testname: 'libsignal-protocol tests',
           'max-duration': 300,
@@ -169,41 +183,42 @@ module.exports = function(grunt) {
   });
 
   grunt.registerMultiTask('compile', 'Compile the C libraries with emscripten.', function() {
-      var callback = this.async();
-      var outfile = 'build/' + this.target + '.js';
+    var callback = this.async();
+    var outfile = 'build/' + this.target + '.js';
 
-      var exported_functions = this.data.methods.map(function(name) {
-        return "'_" + name + "'";
-      });
-      var flags = [
-          '-O1',
-          '-Qunused-arguments',
-          '-o',  outfile,
-          '-Inative/ed25519/nacl_includes -Inative/ed25519 -Inative/ed25519/sha512',
-          '-s', "EXPORTED_FUNCTIONS=\"[" + exported_functions.join(',') + "]\""];
-      var command = [].concat('emcc', this.data.src_files, flags).join(' ');
-      grunt.log.writeln('Compiling via emscripten to ' + outfile);
+    var exported_functions = this.data.methods.map(function(name) {
+      return "'_" + name + "'";
+    });
+    var flags = [
+      '-O1',
+      '-Qunused-arguments',
+      '-o',  outfile,
+      '-Inative/ed25519/nacl_includes -Inative/ed25519 -Inative/ed25519/sha512',
+      '-s', "EXPORTED_FUNCTIONS=\"[" + exported_functions.join(',') + "]\""];
+    var command = [].concat('emcc', this.data.src_files, flags).join(' ');
+    grunt.log.writeln('Compiling via emscripten to ' + outfile);
 
-      var exitCode = 0;
-      grunt.verbose.subhead(command);
-      grunt.verbose.writeln(util.format('Expecting exit code %d', exitCode));
+    var exitCode = 0;
+    grunt.verbose.subhead(command);
+    grunt.verbose.writeln(util.format('Expecting exit code %d', exitCode));
 
-      var child = child_process.exec(command);
-      child.stdout.on('data', function (d) { grunt.log.write(d); });
-      child.stderr.on('data', function (d) { grunt.log.error(d); });
-      child.on('exit', function(code) {
-        if (code !== exitCode) {
-          grunt.log.error(util.format('Exited with code: %d.', code));
-          return callback(false);
-        }
+    var child = child_process.exec(command);
+    child.stdout.on('data', function (d) { grunt.log.write(d); });
+    child.stderr.on('data', function (d) { grunt.log.error(d); });
+    child.on('exit', function(code) {
+      if (code !== exitCode) {
+        grunt.log.error(util.format('Exited with code: %d.', code));
+        return callback(false);
+      }
 
-        grunt.verbose.ok(util.format('Exited with code: %d.', code));
-        callback(true);
-      });
+      grunt.verbose.ok(util.format('Exited with code: %d.', code));
+      callback(true);
+    });
   });
 
-  grunt.registerTask('dev', ['connect', 'watch']);
-  grunt.registerTask('test', ['jshint', 'jscs', 'connect', 'saucelabs-mocha']);
-  grunt.registerTask('default', ['concat']);
+  // grunt.registerTask('dev', ['connect', 'watch']);
+  grunt.registerTask('test', ['jshint', 'jscs', 'mochaTest', 'connect', 'saucelabs-mocha']);
   grunt.registerTask('build', ['compile', 'concat', 'browserify']);
+  grunt.registerTask('default', ['build', 'test']);
+
 };

@@ -33,7 +33,7 @@ function testSignedPreKeyStore(store) {
       });
       it('returns undefined for prekeys that do not exist', function(done) {
         store.storeSignedPreKey(1, testKey).then(function() {
-          return store.loadSignedPreKey(2).then(function(key) {
+          store.loadSignedPreKey(2).then(function(key) {
             assert.isUndefined(key);
           });
         }).then(done,done);

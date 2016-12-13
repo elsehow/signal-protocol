@@ -13,17 +13,6 @@ Theen, build all the assets with
 grunt build
 ```
 
-To test, you can serve the project root on http, 
-and navigate to localhost:[port]/test to see the Mocha tests run.
-
-For the full CI experience, you will need an account with 
-[Sauce Labs](https://saucelabs.com).  Get your username and API key, 
-then set the appropriate envirionment variables to run the tests:
-
-```sh
-SAUCE_USERNAME="your-sauce-username" SAUCE_ACCESS_KEY="your-sauce-key" grunt test
-```
-
 ## Code structure
 
 The source is organized like this:
@@ -42,7 +31,28 @@ The main app entrypoint is `src/main.js`. This is what the caller would require 
 The main test entrypoint is `test/main.js`.
 `test/index.html` compiles everything we need for our tests in the browser.
 
+## Testing
+
 You can run these by serving the project root and visiting /test (e.g. http://localhost:8000/test).
+
+For the full CI experience, you will need an account with 
+[Sauce Labs](https://saucelabs.com).  Get your username and API key, 
+then set the appropriate envirionment variables to run the tests:
+
+```sh
+SAUCE_USERNAME="your-sauce-username" SAUCE_ACCESS_KEY="your-sauce-key" grunt test
+```
+## Browser requirements
+
+This implementation currently depends on the presence of the following
+types/interfaces, which are available in most modern browsers.
+
+* [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+* [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+* [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* [WebCrypto](https://developer.mozilla.org/en-US/docs/Web/API/Crypto) with support for:
+  - AES-CBC
+  - HMAC SHA-256
 
 
 ## Node/browser polyfills
@@ -65,6 +75,11 @@ Ignoring the polyfill in our test browserify build certainly makes the tests pas
 
 
 ## TODO
-- Integrate native test into grunt test routine
-- Travis builds for node?
-- Fix native bundling issue, mentioned above
+- [X] Integrate native test into grunt test routine
+- [X] Get tests running back in browser
+- [X] Builds results for node + browser matrix
+- [X] Test on more platforms (browser)
+- [ ] Test on mobile platforms
+- [ ] Capture + fix native bundling issue (pre-bundle?)
+- [ ] NPM publish 
+- [X] Relatedly, make sure callers don't need emscripten!

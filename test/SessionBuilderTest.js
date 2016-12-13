@@ -91,7 +91,7 @@ describe('SessionBuilder', function() {
         var bobSessionCipher = new SessionCipher(bobStore, ALICE_ADDRESS);
 
         it('creates a session', function(done) {
-            return aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
+            aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
                 assert.isDefined(record);
                 var sessionRecord = SessionRecord.deserialize(record);
                 assert.isTrue(sessionRecord.haveOpenSession());

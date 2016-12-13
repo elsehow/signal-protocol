@@ -37,7 +37,7 @@ function testPreKeyStore(store) {
       });
       it('returns undefined for prekeys that do not exist', function(done) {
         var address = new SignalProtocolAddress(number, 2);
-        return store.loadPreKey(2).then(function(key) {
+        store.loadPreKey(2).then(function(key) {
           assert.isUndefined(key);
         }).then(done,done);
       });

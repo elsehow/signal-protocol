@@ -66,7 +66,7 @@ describe("Crypto", function() {
       for (var i = 0; i < 10; i++)
         info[i] = 240 + i;
 
-      return Crypto.crypto.HKDF(IKM.buffer, salt.buffer, info.buffer).then(function(OKM){
+      Crypto.crypto.HKDF(IKM.buffer, salt.buffer, info.buffer).then(function(OKM){
         assertEqualArrayBuffers(OKM[0], T1);
         assertEqualArrayBuffers(OKM[1].slice(0, 10), T2);
       }).then(done).catch(done);
@@ -129,7 +129,7 @@ describe("Crypto", function() {
     describe("Ed25519Sign", function() {
       // Some self-generated test vectors
       it('works', function(done) {
-        return Crypto.crypto.Ed25519Sign(priv, msg).then(function(sigCalc) {
+        Crypto.crypto.Ed25519Sign(priv, msg).then(function(sigCalc) {
           assertEqualArrayBuffers(sig, sigCalc);
         }).then(done).catch(done);
       });
@@ -148,7 +148,7 @@ describe("Crypto", function() {
       });
 
       it("does not throw on good signature", function(done) {
-        return Crypto.crypto.Ed25519Verify(pub, msg, sig).then(done).catch(done);
+        Crypto.crypto.Ed25519Verify(pub, msg, sig).then(done).catch(done);
       });
     });
   }

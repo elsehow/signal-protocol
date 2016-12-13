@@ -1,4 +1,4 @@
-let signal = require('..');
+var signal = require('..');
 var assert = require('chai').assert;
 
 describe('Integration test', function() {

@@ -12,7 +12,7 @@ function testSessionStore(store) {
       var address = new SignalProtocolAddress(number, 1);
       it('stores sessions encoded as strings', function(done) {
         store.storeSession(address.toString(), testRecord).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
+          store.loadSession(address.toString()).then(function(record) {
             assert.strictEqual(record, testRecord);
           });
         }).then(done,done);
@@ -38,7 +38,7 @@ function testSessionStore(store) {
       });
       it('returns undefined for sessions that do not exist', function(done) {
         var address = new SignalProtocolAddress(number, 2);
-        return store.loadSession(address.toString()).then(function(record) {
+        store.loadSession(address.toString()).then(function(record) {
           assert.isUndefined(record);
         }).then(done,done);
       });
@@ -50,7 +50,7 @@ function testSessionStore(store) {
           store.storeSession(address.toString(), testRecord).then(done);
         });
         store.removeSession(address.toString()).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
+          store.loadSession(address.toString()).then(function(record) {
             assert.isUndefined(record);
           });
         }).then(done,done);
@@ -69,7 +69,7 @@ function testSessionStore(store) {
           });
         });
         promise.then(function() {
-          return store.removeAllSessions(number).then(function(record) {
+          store.removeAllSessions(number).then(function(record) {
             return Promise.all(devices.map(store.loadSession.bind(store))).then(function(records) {
               for (var i in records) {
                 assert.isUndefined(records[i]);

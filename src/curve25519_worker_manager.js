@@ -4,15 +4,15 @@
 var origCurve25519 = require('./curve25519_wrapper.js');
 // var CurveWrapper = require('./curve25519_wrapper.js');
 
-function workerRoutine () {
-  self.onmessage = function(e) {
-    origCurve25519.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
-      self.postMessage({ id: e.data.id, result: result });
-    }).catch(function(error) {
-      self.postMessage({ id: e.data.id, error: error.message });
-    });
-  };
-}
+// function workerRoutine () {
+//   self.onmessage = function(e) {
+//     origCurve25519.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
+//       self.postMessage({ id: e.data.id, result: result });
+//     }).catch(function(error) {
+//       self.postMessage({ id: e.data.id, error: error.message });
+//     });
+//   };
+// }
 
 
 function Curve25519Worker() {
@@ -21,12 +21,11 @@ function Curve25519Worker() {
   // BROWSER POLYFILL
   try {
     var work = require('webworkify');
-    this.worker = work(function (self) {
-      workerRoutine();
-    });
+    this.worker = work(require('./curve25519_worker.js'));
   } catch (e) {
     var Worker  = require('./node_polyfills.js').Worker;
-    this.worker = new Worker(workerRoutine);
+    var routine = require('./curve_work_routine.js');
+    this.worker = new Worker(routine);
   }
   // this.worker = new Worker(url);
   this.worker.onmessage = function(e) {
