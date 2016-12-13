@@ -5,9 +5,6 @@
 var Crypto = require('../src/crypto.js');
 var SignalProtocolStore = require('./InMemorySignalProtocolStore.js');
 var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
 
 
 function testSignalProtocolStore (testIdentityKeyStore, testPreKeyStore, testSignedPreKeyStore, testSessionStore) {

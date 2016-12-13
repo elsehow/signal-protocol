@@ -32,3 +32,12 @@ then set the appropriate envirionment variables to run the tests:
 SAUCE_USERNAME="your-sauce-username" SAUCE_ACCESS_KEY="your-sauce-key" grunt test
 ```
 
+
+## Node/browser polyfills
+
+There are 2 node polyfills for browser stuff, one in `src/crypto.js` and one in `src/curve25519_worker_manager.js`
+Just search the source for:
+
+```js
+// BROWSER POLYFILL
+```

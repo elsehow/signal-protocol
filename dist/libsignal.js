@@ -62517,15 +62517,21 @@ module.exports = mySignalProtocolAddress;
  */
 'use strict';
 
-// TODO polyfill window.crypto for node?
-var crypto = window.crypto;
+
+// BROWSER POLYFILL
+var crypto = null;
+try {
+  crypto = window.crypto;
+} catch (e) {
+  crypto = require('./node_polyfills.js').crypto;
+}
 
 var Curve = require('./Curve.js');
 var util = require('./helpers.js');
 var dcodeIO = require('../build/dcodeIO.js');
 
 if (!crypto || !crypto.subtle || typeof crypto.getRandomValues !== 'function') {
-  throw new Error('WebCrypto not found');
+  throw new Error('WebCrypto not found, and node-webcrypto-ossl not imported!');
 }
 
 // object for this crypto.js scope
@@ -62654,7 +62660,7 @@ module.exports = myCrypto;
 //   }
 // };
 
-},{"../build/dcodeIO.js":2,"./Curve.js":145,"./helpers.js":155}],154:[function(require,module,exports){
+},{"../build/dcodeIO.js":2,"./Curve.js":145,"./helpers.js":155,"./node_polyfills.js":undefined}],154:[function(require,module,exports){
 'use strict';
 
 var Internal = Internal || {};

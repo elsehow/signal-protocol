@@ -1,41 +1,33 @@
 'use strict';
 
-
-// TODO
-//
-//
-//   turn this into a working worker
-//
-//
-//
-//  hints
-//   - follow substacks model so that worker will at least log
-//   - see that its sending messages back
-//   - see that we can see those messages here
-
-var work = require('webworkify');
-var Internal = {};
-
 // I am the...workee?
 var origCurve25519 = require('./curve25519_wrapper.js');
+// var CurveWrapper = require('./curve25519_wrapper.js');
 
-Internal.startWorker = function(url) {
-  Internal.stopWorker(); // there can be only one
-  Internal.curve25519_async = new Curve25519Worker(url);
+function workerRoutine () {
+  self.onmessage = function(e) {
+    origCurve25519.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
+      self.postMessage({ id: e.data.id, result: result });
+    }).catch(function(error) {
+      self.postMessage({ id: e.data.id, error: error.message });
+    });
+  };
 };
 
-Internal.stopWorker = function() {
-  if (Internal.curve25519_async instanceof Curve25519Worker) {
-    var worker = Internal.curve25519_async.worker;
-    Internal.curve25519_async = origCurve25519;
-    worker.terminate();
-  }
-};
 
 function Curve25519Worker() {
   this.jobs = {};
   this.jobId = 0;
-  this.worker = work(require('./curve25519_worker.js'));
+  // BROWSER POLYFILL
+  try {
+    var work = require('webworkify');
+    this.worker = work(function (self) {
+      workerRoutine()
+    });
+  } catch (e) {
+    var Worker  = require('./node_polyfills.js').Worker;
+    this.worker = new Worker(workerRoutine);
+  }
   // this.worker = new Worker(url);
   this.worker.onmessage = function(e) {
     var job = this.jobs[e.data.id];
@@ -71,4 +63,22 @@ Curve25519Worker.prototype = {
   }
 };
 
-module.exports = Internal;
+// stuf for export
+
+var self = {};
+
+self.startWorker = function(url) {
+  self.stopWorker(); // there can be only one
+  self.curve25519_async = new Curve25519Worker(url);
+};
+
+self.stopWorker = function() {
+  if (self.curve25519_async instanceof Curve25519Worker) {
+    var worker = self.curve25519_async.worker;
+    self.curve25519_async = origCurve25519;
+    worker.terminate();
+  }
+};
+
+
+module.exports = self;

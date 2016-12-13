@@ -3,14 +3,13 @@
  */
 'use strict';
 
-// TODO polyfill window.crypto for node?
 
+// BROWSER POLYFILL
 var crypto = null;
 try {
   crypto = window.crypto;
 } catch (e) {
-  var WebCrypto = require('node-webcrypto-ossl');
-  crypto = new WebCrypto()
+  crypto = require('./node_polyfills.js').crypto;
 }
 
 var Curve = require('./Curve.js');

@@ -9,11 +9,17 @@ module.exports = function(grunt) {
     browserify: {
       legacy: {
         src: 'src/main_window.js',
-        dest: 'dist/libsignal.js'
+        dest: 'dist/libsignal.js',
+        options: {
+          exclude: ['src/node_polyfills.js'],
+        }
       },
       test: {
         src: 'test/main.js',
-        dest: 'build/test_main.js'
+        dest: 'build/test_main.js',
+        options: {
+          exclude: ['src/node_polyfills.js'],
+        }
       }
     },
     concat: {
