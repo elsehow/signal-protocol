@@ -4,6 +4,10 @@ var SessionCipher = require('../src/SessionCipher.js');
 var SessionBuilder = require('../src/SessionBuilder.js');
 var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
 var util = require('../src/helpers.js');
+var assert = require('chai').assert;
+var test_util = require('./test_helpers.js');
+var hexToArrayBuffer = test_util.hexToArrayBuffer;
+var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
 
 var SignalProtocolStore = require('./InMemorySignalProtocolStore.js');
 

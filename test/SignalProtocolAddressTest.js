@@ -1,4 +1,5 @@
 var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
+var assert = require('chai').assert;
 
 describe('SignalProtocolAddress', function() {
   var name = 'name';

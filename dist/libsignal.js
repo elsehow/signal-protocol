@@ -34426,7 +34426,7 @@ Internal.protoText = function() {
 // (see the Gruntfile's `protos_concat` routine)
 // here we export the loaded protobuf, an object
 //    { WhisperMessage, PreKeyWhisperMessage }
-module.exports = function protobuf () {
+module.exports = function protobuf() {
   'use strict';
   var dcodeIO = require('../build/dcodeIO.js');
 
@@ -53593,7 +53593,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "/Users/ffff/Projects/libsignal-protocol-javascript/node_modules/browserify-sign"
+      "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -53628,7 +53628,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/ffff/Projects/libsignal-protocol-javascript/node_modules/browserify-sign",
+  "_where": "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -61980,7 +61980,7 @@ SessionCipher.prototype = {
       }.bind(this));
   },
   doDecryptWhisperMessage: function(messageBytes, session) {
-    if (!messageBytes instanceof ArrayBuffer) {
+    if (!(messageBytes instanceof ArrayBuffer)) {
         throw new Error("Expected messageBytes to be an ArrayBuffer");
     }
     var version = (new Uint8Array(messageBytes))[0];
@@ -62873,7 +62873,7 @@ module.exports = {
   // internal stuff
   _crypto: require('./crypto.js'),
   _curve: require('./Curve.js')
-}
+};
 
 },{"./Curve.js":145,"./KeyHelper.js":146,"./NumericFingerprint.js":147,"./SessionBuilder.js":148,"./SessionCipher.js":149,"./SignalProtocolAddress.js":152,"./crypto.js":153}],157:[function(require,module,exports){
 // for legacy builds

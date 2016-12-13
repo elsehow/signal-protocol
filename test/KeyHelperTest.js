@@ -1,4 +1,5 @@
 var KeyHelper = require('../src/KeyHelper.js');
+var assert = require('chai').assert;
 
 describe('KeyHelper', function() {
     function validateKeyPair(keyPair) {

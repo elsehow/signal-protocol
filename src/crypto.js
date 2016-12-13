@@ -4,14 +4,21 @@
 'use strict';
 
 // TODO polyfill window.crypto for node?
-var crypto = window.crypto;
+
+var crypto = null;
+try {
+  crypto = window.crypto;
+} catch (e) {
+  var WebCrypto = require('node-webcrypto-ossl');
+  crypto = new WebCrypto()
+}
 
 var Curve = require('./Curve.js');
 var util = require('./helpers.js');
 var dcodeIO = require('../build/dcodeIO.js');
 
 if (!crypto || !crypto.subtle || typeof crypto.getRandomValues !== 'function') {
-  throw new Error('WebCrypto not found');
+  throw new Error('WebCrypto not found, and node-webcrypto-ossl not imported!');
 }
 
 // object for this crypto.js scope

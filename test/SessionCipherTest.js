@@ -13,6 +13,7 @@ var SessionRecord = require('../src/SessionRecord.js');
 var SessionBuilder = require('../src/SessionBuilder.js');
 var textsecure = require('./temp_helpers.js');
 var protobuf = require('../build/protobufs_concat.js');
+var assert = require('chai').assert;
 
 describe('SessionCipher', function() {
     describe('getRemoteRegistrationId', function() {

@@ -1,3 +1,6 @@
+var test_util = require('./test_helpers.js');
+var hexToArrayBuffer = test_util.hexToArrayBuffer;
+var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
 // We're gonna throw the finalized tests in here:
 var tests = [];
 

@@ -6,6 +6,7 @@
 
 var Crypto = require('../src/crypto.js');
 var FingerprintGenerator = require('../src/NumericFingerprint.js');
+var assert = require('chai').assert;
 
 describe('NumericFingerprint', function() {
     this.timeout(5000);

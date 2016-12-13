@@ -1,4 +1,8 @@
 var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
+var assert = require('chai').assert;
+var test_util = require('./test_helpers.js');
+var hexToArrayBuffer = test_util.hexToArrayBuffer;
+var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
 
 function testSessionStore(store) {
   describe('SessionStore', function() {

@@ -2,6 +2,7 @@
 'use strict';
 
 var util = require('../src/helpers.js');
+var assert = require('chai').assert;
 
 describe('util', function() {
     describe("isEqual", function(){

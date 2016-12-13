@@ -1,4 +1,5 @@
 let signal = require('..');
+var assert = require('chai').assert;
 
 describe('Integration test', function() {
   it('imports all methods', function(done) {

@@ -5,8 +5,12 @@
 'use strict';
 // window.assert = chai.assert;
 
+var assert = require('chai').assert;
 var Crypto = require('../src/crypto.js');
 var worker = require('../src/curve25519_worker_manager.js');
+var test_util = require('./test_helpers.js');
+var hexToArrayBuffer = test_util.hexToArrayBuffer;
+var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
 
 describe("Crypto", function() {
   describe("Encrypt AES-CBC", function() {

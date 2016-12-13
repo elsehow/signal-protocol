@@ -3,7 +3,9 @@
 A ratcheting forward secrecy protocol that works in synchronous and
 asynchronous messaging environments.
 
-This repository is forked from WhisperSystem's own [https://github.com/WhisperSystems/libsignal-protocol-javascript](libsignal-protocol-javascript), modified to support node and the browser.
+This repository is forked from WhisperSystem's own [https://github.com/WhisperSystems/libsignal-protocol-javascript](libsignal-protocol-javascript), modified to support node and the browser. I use [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl) as a drop-in native replacement for WebCrypto API.
+
+**WARNING: This code has NOT been reviewed by an experienced cryptographer. IT IS FOR RESEARCH ONLY!!!!!**
 
 You can read more about the signal protocol 
 (formerly axolotl for its self-healing abilities)
