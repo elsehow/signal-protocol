@@ -12,7 +12,7 @@ function workerRoutine () {
       self.postMessage({ id: e.data.id, error: error.message });
     });
   };
-};
+}
 
 
 function Curve25519Worker() {
@@ -22,7 +22,7 @@ function Curve25519Worker() {
   try {
     var work = require('webworkify');
     this.worker = work(function (self) {
-      workerRoutine()
+      workerRoutine();
     });
   } catch (e) {
     var Worker  = require('./node_polyfills.js').Worker;

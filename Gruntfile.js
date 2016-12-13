@@ -1,6 +1,11 @@
 var child_process = require('child_process');
 var util = require('util');
 
+// browserify should ignore the native polyfills
+var browserifyOpts = {
+  exclude: ['src/node_polyfills.js'],
+};
+
 module.exports = function(grunt) {
   'use strict';
 
@@ -10,16 +15,12 @@ module.exports = function(grunt) {
       legacy: {
         src: 'src/main_window.js',
         dest: 'dist/libsignal.js',
-        options: {
-          exclude: ['src/node_polyfills.js'],
-        }
+        options: browserifyOpts
       },
       test: {
         src: 'test/main.js',
         dest: 'build/test_main.js',
-        options: {
-          exclude: ['src/node_polyfills.js'],
-        }
+        options: browserifyOpts
       }
     },
     concat: {
