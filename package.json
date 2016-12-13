@@ -1,7 +1,11 @@
 {
   "name": "signal-protocol",
   "repository": "https://github.com/elsehow/signal-protocol",
-  "version": "0.0.1",
+  "author": "elsehow",
+  "contributors": [
+    "liliakai"
+  ],
+  "version": "0.0.2",
   "main": "src/main.js",
   "license": "GPL-3.0",
   "dependencies": {
