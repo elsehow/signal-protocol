@@ -1,6 +1,7 @@
 {
   "name": "signal-protocol",
   "repository": "https://github.com/elsehow/signal-protocol",
+  "description": "the signal ratcheting forward secrecy protocol, for node and browsers",
   "author": "elsehow",
   "contributors": [
     "liliakai"
