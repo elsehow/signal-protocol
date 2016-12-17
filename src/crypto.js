@@ -30,8 +30,15 @@ myCrypto.crypto = {
     return array.buffer;
   },
   encrypt: function(key, data, iv) {
-    return crypto.subtle.importKey('raw', key, {name: 'AES-CBC'}, false, ['encrypt']).then(function(key) {
-      return crypto.subtle.encrypt({name: 'AES-CBC', iv: new Uint8Array(iv)}, key, data);
+      // console.log('input data is', data)
+      return crypto.subtle.importKey('raw', key, {
+          name: 'AES-CBC'
+      }, false, ['encrypt'])
+          .then(function(key) {
+              return crypto.subtle.encrypt({
+                  name: 'AES-CBC',
+                  iv: new Uint8Array(iv)
+              }, key, data);
     });
   },
   decrypt: function(key, data, iv) {
