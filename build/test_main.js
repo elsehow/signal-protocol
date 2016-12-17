@@ -59590,14 +59590,21 @@ utils.intFromLE = intFromLE;
 module.exports={
   "_args": [
     [
-      "elliptic@^6.0.0",
+      {
+        "raw": "elliptic@^6.0.0",
+        "scope": null,
+        "escapedName": "elliptic",
+        "name": "elliptic",
+        "rawSpec": "^6.0.0",
+        "spec": ">=6.0.0 <7.0.0",
+        "type": "range"
+      },
       "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
   "_id": "elliptic@6.3.2",
   "_inCache": true,
-  "_installable": true,
   "_location": "/elliptic",
   "_nodeVersion": "6.3.0",
   "_npmOperationalInternal": {
@@ -59605,16 +59612,17 @@ module.exports={
     "tmp": "tmp/elliptic-6.3.2.tgz_1473938837205_0.3108903462998569"
   },
   "_npmUser": {
-    "email": "fedor@indutny.com",
-    "name": "indutny"
+    "name": "indutny",
+    "email": "fedor@indutny.com"
   },
   "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
-    "name": "elliptic",
     "raw": "elliptic@^6.0.0",
-    "rawSpec": "^6.0.0",
     "scope": null,
+    "escapedName": "elliptic",
+    "name": "elliptic",
+    "rawSpec": "^6.0.0",
     "spec": ">=6.0.0 <7.0.0",
     "type": "range"
   },
@@ -59628,8 +59636,8 @@ module.exports={
   "_spec": "elliptic@^6.0.0",
   "_where": "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign",
   "author": {
-    "email": "fedor@indutny.com",
-    "name": "Fedor Indutny"
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
@@ -59676,8 +59684,8 @@ module.exports={
   "main": "lib/elliptic.js",
   "maintainers": [
     {
-      "email": "fedor@indutny.com",
-      "name": "indutny"
+      "name": "indutny",
+      "email": "fedor@indutny.com"
     }
   ],
   "name": "elliptic",
@@ -67424,89 +67432,6 @@ exports.createContext = Script.createContext = function (context) {
 };
 
 },{"indexof":130}],179:[function(require,module,exports){
-var bundleFn = arguments[3];
-var sources = arguments[4];
-var cache = arguments[5];
-
-var stringify = JSON.stringify;
-
-module.exports = function (fn, options) {
-    var wkey;
-    var cacheKeys = Object.keys(cache);
-
-    for (var i = 0, l = cacheKeys.length; i < l; i++) {
-        var key = cacheKeys[i];
-        var exp = cache[key].exports;
-        // Using babel as a transpiler to use esmodule, the export will always
-        // be an object with the default export as a property of it. To ensure
-        // the existing api and babel esmodule exports are both supported we
-        // check for both
-        if (exp === fn || exp && exp.default === fn) {
-            wkey = key;
-            break;
-        }
-    }
-
-    if (!wkey) {
-        wkey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
-        var wcache = {};
-        for (var i = 0, l = cacheKeys.length; i < l; i++) {
-            var key = cacheKeys[i];
-            wcache[key] = key;
-        }
-        sources[wkey] = [
-            Function(['require','module','exports'], '(' + fn + ')(self)'),
-            wcache
-        ];
-    }
-    var skey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
-
-    var scache = {}; scache[wkey] = wkey;
-    sources[skey] = [
-        Function(['require'], (
-            // try to call default if defined to also support babel esmodule
-            // exports
-            'var f = require(' + stringify(wkey) + ');' +
-            '(f.default ? f.default : f)(self);'
-        )),
-        scache
-    ];
-
-    var workerSources = {};
-    resolveSources(skey);
-
-    function resolveSources(key) {
-        workerSources[key] = true;
-
-        for (var depPath in sources[key][1]) {
-            var depKey = sources[key][1][depPath];
-            if (!workerSources[depKey]) {
-                resolveSources(depKey);
-            }
-        }
-    }
-
-    var src = '(' + bundleFn + ')({'
-        + Object.keys(workerSources).map(function (key) {
-            return stringify(key) + ':['
-                + sources[key][0]
-                + ',' + stringify(sources[key][1]) + ']'
-            ;
-        }).join(',')
-        + '},{},[' + stringify(skey) + '])'
-    ;
-
-    var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-
-    var blob = new Blob([src], { type: 'text/javascript' });
-    if (options && options.bare) { return blob; }
-    var workerUrl = URL.createObjectURL(blob);
-    var worker = new Worker(workerUrl);
-    worker.objectURL = workerUrl;
-    return worker;
-};
-
-},{}],180:[function(require,module,exports){
 var BaseKeyType = {
   OURS: 1,
   THEIRS: 2
@@ -67514,7 +67439,7 @@ var BaseKeyType = {
 
 module.exports = BaseKeyType;
 
-},{}],181:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 var ChainType = {
   SENDING: 1,
   RECEIVING: 2
@@ -67522,7 +67447,7 @@ var ChainType = {
 
 module.exports = ChainType;
 
-},{}],182:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 'use strict';
 
 var Crypto = require('crypto');
@@ -67640,7 +67565,7 @@ module.exports = {
   libsignal_Curve_async: libsignal_Curve_async
 };
 
-},{"./curve25519_wrapper.js":193,"crypto":89}],183:[function(require,module,exports){
+},{"./curve25519_wrapper.js":190,"crypto":89}],182:[function(require,module,exports){
 var Crypto = require('./crypto.js');
 
 function isNonNegativeInteger(n) {
@@ -67694,7 +67619,7 @@ var KeyHelper = {
 
 module.exports = KeyHelper;
 
-},{"./crypto.js":190}],184:[function(require,module,exports){
+},{"./crypto.js":189}],183:[function(require,module,exports){
 var VERSION = 0;
 
 var Crypto = require('./crypto.js');
@@ -67769,7 +67694,7 @@ FingerprintGenerator.prototype = {
 
 module.exports = FingerprintGenerator;
 
-},{"../build/dcodeIO.js":2,"./crypto.js":190}],185:[function(require,module,exports){
+},{"../build/dcodeIO.js":2,"./crypto.js":189}],184:[function(require,module,exports){
 var SessionLock = require('./SessionLock.js');
 var Crypto = require('./crypto.js');
 var SessionRecord = require('./SessionRecord.js');
@@ -68001,7 +67926,7 @@ var mySessionBuilder = function (storage, remoteAddress) {
 
 module.exports = mySessionBuilder;
 
-},{"./BaseKeyType.js":180,"./ChainType.js":181,"./SessionLock.js":187,"./SessionRecord.js":188,"./crypto.js":190,"./helpers.js":195}],186:[function(require,module,exports){
+},{"./BaseKeyType.js":179,"./ChainType.js":180,"./SessionLock.js":186,"./SessionRecord.js":187,"./crypto.js":189,"./helpers.js":191}],185:[function(require,module,exports){
 var util = require('../src/helpers.js');
 
 var SessionLock = require('./SessionLock.js');
@@ -68393,7 +68318,7 @@ var mySessionCipher = function(storage, remoteAddress) {
 
 module.exports = mySessionCipher;
 
-},{"../build/dcodeIO.js":2,"../build/protobufs_concat.js":3,"../src/helpers.js":195,"./ChainType.js":181,"./SessionBuilder.js":185,"./SessionLock.js":187,"./SessionRecord.js":188,"./crypto.js":190}],187:[function(require,module,exports){
+},{"../build/dcodeIO.js":2,"../build/protobufs_concat.js":3,"../src/helpers.js":191,"./ChainType.js":180,"./SessionBuilder.js":184,"./SessionLock.js":186,"./SessionRecord.js":187,"./crypto.js":189}],186:[function(require,module,exports){
  /*
   * jobQueue manages multiple queues indexed by device to serialize
   * session io ops on the database.
@@ -68417,7 +68342,7 @@ SessionLock.queueJobForNumber = function queueJobForNumber(number, runJob) {
 
 module.exports = SessionLock;
 
-},{}],188:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 /*
  * vim: ts=4:sw=4
  */
@@ -68690,7 +68615,7 @@ var SessionRecord = function() {
 
 module.exports = SessionRecord;
 
-},{"../build/dcodeIO.js":2,"./BaseKeyType.js":180,"./helpers.js":195}],189:[function(require,module,exports){
+},{"../build/dcodeIO.js":2,"./BaseKeyType.js":179,"./helpers.js":191}],188:[function(require,module,exports){
 function SignalProtocolAddress(name, deviceId) {
   this.name = name;
   this.deviceId = deviceId;
@@ -68730,7 +68655,7 @@ mySignalProtocolAddress.fromString = function(encodedAddress) {
 
 module.exports = mySignalProtocolAddress;
 
-},{}],190:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 /*
  * vim: ts=4:sw=4
  */
@@ -68879,102 +68804,7 @@ module.exports = myCrypto;
 //   }
 // };
 
-},{"../build/dcodeIO.js":2,"./Curve.js":182,"./helpers.js":195,"./node_polyfills.js":undefined}],191:[function(require,module,exports){
-// load a workr routine and export it
-var workRoutine = require('./curve_work_routine.js');
-// our export is a function that takes `self`
-// `self` is passed in by webworkify.
-// https://github.com/substack/webworkify
-module.exports = function (self) {
-  workRoutine.apply(self);
-};
-
-},{"./curve_work_routine.js":194}],192:[function(require,module,exports){
-'use strict';
-
-// I am the...workee?
-var origCurve25519 = require('./curve25519_wrapper.js');
-// var CurveWrapper = require('./curve25519_wrapper.js');
-
-// function workerRoutine () {
-//   self.onmessage = function(e) {
-//     origCurve25519.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
-//       self.postMessage({ id: e.data.id, result: result });
-//     }).catch(function(error) {
-//       self.postMessage({ id: e.data.id, error: error.message });
-//     });
-//   };
-// }
-
-
-function Curve25519Worker() {
-  this.jobs = {};
-  this.jobId = 0;
-  // BROWSER POLYFILL
-  try {
-    var work = require('webworkify');
-    this.worker = work(require('./curve25519_worker.js'));
-  } catch (e) {
-    var Worker  = require('./node_polyfills.js').Worker;
-    var routine = require('./curve_work_routine.js');
-    this.worker = new Worker(routine);
-  }
-  // this.worker = new Worker(url);
-  this.worker.onmessage = function(e) {
-    var job = this.jobs[e.data.id];
-    if (e.data.error && typeof job.onerror === 'function') {
-      job.onerror(new Error(e.data.error));
-    } else if (typeof job.onsuccess === 'function') {
-      job.onsuccess(e.data.result);
-    }
-    delete this.jobs[e.data.id];
-  }.bind(this);
-}
-
-Curve25519Worker.prototype = {
-  constructor: Curve25519Worker,
-  postMessage: function(methodName, args, onsuccess, onerror) {
-    return new Promise(function(resolve, reject) {
-      this.jobs[this.jobId] = { onsuccess: resolve, onerror: reject };
-      this.worker.postMessage({ id: this.jobId, methodName: methodName, args: args });
-      this.jobId++;
-    }.bind(this));
-  },
-  keyPair: function(privKey) {
-    return this.postMessage('keyPair', [privKey]);
-  },
-  sharedSecret: function(pubKey, privKey) {
-    return this.postMessage('sharedSecret', [pubKey, privKey]);
-  },
-  sign: function(privKey, message) {
-    return this.postMessage('sign', [privKey, message]);
-  },
-  verify: function(pubKey, message, sig) {
-    return this.postMessage('verify', [pubKey, message, sig]);
-  }
-};
-
-// stuf for export
-
-var self = {};
-
-self.startWorker = function(url) {
-  self.stopWorker(); // there can be only one
-  self.curve25519_async = new Curve25519Worker(url);
-};
-
-self.stopWorker = function() {
-  if (self.curve25519_async instanceof Curve25519Worker) {
-    var worker = self.curve25519_async.worker;
-    self.curve25519_async = origCurve25519;
-    worker.terminate();
-  }
-};
-
-
-module.exports = self;
-
-},{"./curve25519_worker.js":191,"./curve25519_wrapper.js":193,"./curve_work_routine.js":194,"./node_polyfills.js":undefined,"webworkify":179}],193:[function(require,module,exports){
+},{"../build/dcodeIO.js":2,"./Curve.js":181,"./helpers.js":191,"./node_polyfills.js":undefined}],190:[function(require,module,exports){
 'use strict';
 
 var Internal = Internal || {};
@@ -69126,22 +68956,7 @@ Internal.curve25519_async = {
 
 module.exports = Internal;
 
-},{"../build/curve25519_concat.js":1}],194:[function(require,module,exports){
-var CurveWrapper = require('./curve25519_wrapper.js');
-
-function curveWorkRoutine () {
-  self.onmessage = function(e) {
-    CurveWrapper.curve25519_async[e.data.methodName].apply(null, e.data.args).then(function(result) {
-      self.postMessage({ id: e.data.id, result: result });
-    }).catch(function(error) {
-      self.postMessage({ id: e.data.id, error: error.message });
-    });
-  };
-}
-
-module.exports = curveWorkRoutine;
-
-},{"./curve25519_wrapper.js":193}],195:[function(require,module,exports){
+},{"../build/curve25519_concat.js":1}],191:[function(require,module,exports){
 /*
  * vim: ts=4:sw=4
  */
@@ -69198,7 +69013,7 @@ var util = {
 
 module.exports = util;
 
-},{"../build/dcodeIO.js":2}],196:[function(require,module,exports){
+},{"../build/dcodeIO.js":2}],192:[function(require,module,exports){
 module.exports = {
   KeyHelper: require('./KeyHelper.js'),
   SignalProtocolAddress: require('./SignalProtocolAddress.js'),
@@ -69210,78 +69025,7 @@ module.exports = {
   _curve: require('./Curve.js')
 };
 
-},{"./Curve.js":182,"./KeyHelper.js":183,"./NumericFingerprint.js":184,"./SessionBuilder.js":185,"./SessionCipher.js":186,"./SignalProtocolAddress.js":189,"./crypto.js":190}],197:[function(require,module,exports){
-var Crypto = require('../src/crypto.js');
-var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-function testIdentityKeyStore(store, registrationId, identityKey) {
-  describe('IdentityKeyStore', function() {
-    var number = '+5558675309';
-    var testKey;
-    before(function(done) {
-      Crypto.crypto.createKeyPair().then(function(keyPair) {
-        testKey = keyPair;
-      }).then(done,done);
-    });
-
-    describe('getLocalRegistrationId', function() {
-      it('retrieves my registration id', function(done) {
-        store.getLocalRegistrationId().then(function(reg) {
-          assert.strictEqual(reg, registrationId);
-        }).then(done, done);
-      });
-    });
-    describe('getIdentityKeyPair', function() {
-      it('retrieves my identity key', function(done) {
-        store.getIdentityKeyPair().then(function(key) {
-          assertEqualArrayBuffers(key.pubKey, identityKey.pubKey);
-          assertEqualArrayBuffers(key.privKey, identityKey.privKey);
-        }).then(done,done);
-      });
-    });
-    describe('saveIdentity', function() {
-      it('stores identity keys', function(done) {
-        store.saveIdentity(number, testKey.pubKey).then(function() {
-          return store.loadIdentityKey(number).then(function(key) {
-            assertEqualArrayBuffers(key, testKey.pubKey);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('isTrustedIdentity', function() {
-      it('returns true if a key is trusted', function(done) {
-        store.saveIdentity(number, testKey.pubKey).then(function() {
-          store.isTrustedIdentity(number, testKey.pubKey).then(function(trusted) {
-            if (trusted) {
-              done();
-            } else {
-              done(new Error('Wrong value for trusted key'));
-            }
-          }).catch(done);
-        });
-      });
-      it('returns false if a key is untrusted', function(done) {
-        var newIdentity = Crypto.crypto.getRandomBytes(33);
-        store.saveIdentity(number, testKey.pubKey).then(function() {
-          store.isTrustedIdentity(number, newIdentity).then(function(trusted) {
-            if (trusted) {
-              done(new Error('Wrong value for untrusted key'));
-            } else {
-              done();
-            }
-          }).catch(done);
-        });
-      });
-    });
-  });
-}
-
-module.exports = testIdentityKeyStore;
-
-},{"../src/crypto.js":190,"./test_helpers.js":213,"chai":53}],198:[function(require,module,exports){
+},{"./Curve.js":181,"./KeyHelper.js":182,"./NumericFingerprint.js":183,"./SessionBuilder.js":184,"./SessionCipher.js":185,"./SignalProtocolAddress.js":188,"./crypto.js":189}],193:[function(require,module,exports){
 var util = require('../src/helpers.js');
 
 function SignalProtocolStore() {
@@ -69390,9 +69134,12 @@ SignalProtocolStore.prototype = {
 
 module.exports = SignalProtocolStore;
 
-},{"../src/helpers.js":195}],199:[function(require,module,exports){
+},{"../src/helpers.js":191}],194:[function(require,module,exports){
+(function (Buffer){
 var signal = require('..');
+var SignalStore = require('./InMemorySignalProtocolStore.js')
 var assert = require('chai').assert;
+var util = require('../src/helpers.js')
 
 describe('Integration test', function() {
   it('imports all methods', function(done) {
@@ -69475,1778 +69222,80 @@ describe('Integration test', function() {
     });
   }
 
-  it('can play out session building stuff + encrypt', function (done) {
-    var name = 'name';
-    var deviceId = 42;
-    var MySignalProtocolStore = require('./InMemorySignalProtocolStore.js');
-    var store = new MySignalProtocolStore();
-    var address = new signal.SignalProtocolAddress(name, deviceId);
-    var sessionBuilder = new signal.SessionBuilder(store, address);
+    // returns a promise of
+    // [ aliceSessionCipher, bobSessionCipher ]
+    function bobAliceSessionCiphers () {
+        var ALICE_ADDRESS = new signal.SignalProtocolAddress("+14151111111", 1);
+        var BOB_ADDRESS   = new signal.SignalProtocolAddress("+14152222222", 1);
 
-    generateIdentity(store)
-      .then(function () {
-        return generatePreKeyBundle(store, 1337, 1);
-      }).then(function (bundle) {
-        return sessionBuilder.processPreKey(bundle);
-      }).then(function () {
-        var plaintext = "Hello world";
-        var sessionCipher = new signal.SessionCipher(store, address);
-        sessionCipher.encrypt(plaintext).then(function(ciphertext) {
-          assert.isDefined(ciphertext.type);
-          assert.isDefined(ciphertext.body);
-          done();
-        });
-      }).catch(function (err) {
-        assert.isUndefined(err);
-      });
-  });
-});
+        var aliceStore = new SignalStore();
+        var bobStore = new SignalStore();
 
-},{"..":196,"./InMemorySignalProtocolStore.js":198,"chai":53}],200:[function(require,module,exports){
-var KeyHelper = require('../src/KeyHelper.js');
-var assert = require('chai').assert;
-
-describe('KeyHelper', function() {
-    function validateKeyPair(keyPair) {
-        assert.isDefined(keyPair.pubKey);
-        assert.isDefined(keyPair.privKey);
-        assert.strictEqual(keyPair.privKey.byteLength, 32);
-        assert.strictEqual(keyPair.pubKey.byteLength, 33);
-        assert.strictEqual(new Uint8Array(keyPair.pubKey)[0], 5);
-    }
-
-    describe('generateIdentityKeyPair', function() {
-        it ('works', function() {
-            KeyHelper.generateIdentityKeyPair().then(function(keyPair) {
-                validateKeyPair(keyPair);
-            });
-        });
-    });
-
-    describe('generateRegistrationId', function() {
-        it('generates a 14-bit integer', function() {
-            var registrationId = KeyHelper.generateRegistrationId();
-            assert.isNumber(registrationId);
-            assert(registrationId >= 0);
-            assert(registrationId < 16384);
-            assert.strictEqual(registrationId, Math.round(registrationId)); // integer
-        });
-    });
-
-    describe("generatePreKey", function() {
-        it('generates a preKey', function(done) {
-            KeyHelper.generatePreKey(1337).then(function(result) {
-                validateKeyPair(result.keyPair);
-                assert.strictEqual(result.keyId, 1337);
-            }).then(done, done);
-        });
-        it('throws on bad keyId', function() {
-            assert.throws(function(done) {
-                KeyHelper.generatePreKey('bad');
-            }, TypeError);
-        });
-    });
-
-    describe("generateSignedPreKey", function() {
-        it('generates a preKey', function(done) {
-            KeyHelper.generateIdentityKeyPair().then(function(identityKey) {
-                KeyHelper.generateSignedPreKey(identityKey, 1337).then(function(result) {
-                    validateKeyPair(result.keyPair);
-                    assert.strictEqual(result.keyId, 1337);
-                    //todo: validate result.signature
-                });
-            }).then(done, done);
-        });
-        it('throws on bad keyId', function() {
-            assert.throws(function(done) {
-                KeyHelper.generateSignedPreKey('bad');
-            }, TypeError);
-        });
-    });
-});
-
-},{"../src/KeyHelper.js":183,"chai":53}],201:[function(require,module,exports){
-/*
- * vim: ts=4:sw=4
- */
-
-'use strict';
-
-var Crypto = require('../src/crypto.js');
-var FingerprintGenerator = require('../src/NumericFingerprint.js');
-var assert = require('chai').assert;
-
-describe('NumericFingerprint', function() {
-    this.timeout(5000);
-    var ALICE_IDENTITY = [
-        0x05, 0x06, 0x86, 0x3b, 0xc6, 0x6d, 0x02, 0xb4, 0x0d, 0x27, 0xb8, 0xd4,
-        0x9c, 0xa7, 0xc0, 0x9e, 0x92, 0x39, 0x23, 0x6f, 0x9d, 0x7d, 0x25, 0xd6,
-        0xfc, 0xca, 0x5c, 0xe1, 0x3c, 0x70, 0x64, 0xd8, 0x68
-    ];
-    var BOB_IDENTITY   = [
-        0x05, 0xf7, 0x81, 0xb6, 0xfb, 0x32, 0xfe, 0xd9, 0xba, 0x1c, 0xf2, 0xde,
-        0x97, 0x8d, 0x4d, 0x5d, 0xa2, 0x8d, 0xc3, 0x40, 0x46, 0xae, 0x81, 0x44,
-        0x02, 0xb5, 0xc0, 0xdb, 0xd9, 0x6f, 0xda, 0x90, 0x7b
-    ];
-    var FINGERPRINT    = "300354477692869396892869876765458257569162576843440918079131";
-
-    var alice = {
-        identifier: '+14152222222',
-        key: new Uint8Array(ALICE_IDENTITY).buffer
-    };
-    var bob = {
-        identifier: '+14153333333',
-        key: new Uint8Array(BOB_IDENTITY).buffer
-    };
-
-    it('returns the correct fingerprint', function(done) {
-        var generator = new FingerprintGenerator(5200);
-        generator.createFor(
-            alice.identifier, alice.key, bob.identifier, bob.key
-        ).then(function(fingerprint) {
-            assert.strictEqual(fingerprint, FINGERPRINT);
-        }).then(done,done);
-    });
-
-    it ('alice and bob results match', function(done) {
-        var generator = new FingerprintGenerator(1024);
-        Promise.all([
-            generator.createFor(
-                alice.identifier, alice.key, bob.identifier, bob.key
-            ),
-            generator.createFor(
-                bob.identifier, bob.key, alice.identifier, alice.key
-            )
-        ]).then(function(fingerprints) {
-            assert.strictEqual(fingerprints[0], fingerprints[1]);
-        }).then(done,done);
-    });
-
-    it ('alice and !bob results mismatch', function(done) {
-        var generator = new FingerprintGenerator(1024);
-        Promise.all([
-            generator.createFor(
-                alice.identifier, alice.key, '+15558675309', bob.key
-            ),
-            generator.createFor(
-                bob.identifier, bob.key, alice.identifier, alice.key
-            )
-        ]).then(function(fingerprints) {
-            assert.notStrictEqual(fingerprints[0], fingerprints[1]);
-        }).then(done,done);
-    });
-
-    it ('alice and mitm results mismatch', function(done) {
-        var mitm   = Crypto.crypto.getRandomBytes(33);
-        var generator = new FingerprintGenerator(1024);
-        Promise.all([
-            generator.createFor(
-                alice.identifier, alice.key, bob.identifier, mitm
-            ),
-            generator.createFor(
-                bob.identifier, bob.key, alice.identifier, alice.key
-            )
-        ]).then(function(fingerprints) {
-            assert.notStrictEqual(fingerprints[0], fingerprints[1]);
-        }).then(done,done);
-    });
-});
-
-},{"../src/NumericFingerprint.js":184,"../src/crypto.js":190,"chai":53}],202:[function(require,module,exports){
-var Crypto = require('../src/crypto.js');
-var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
-var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-function testPreKeyStore(store) {
-  var number = '+5558675309';
-  var testKey;
-  describe('PreKeyStore', function() {
-    before(function(done) {
-      Crypto.crypto.createKeyPair().then(function(keyPair) {
-        testKey = keyPair;
-      }).then(done,done);
-    });
-    describe('storePreKey', function() {
-      it('stores prekeys', function(done) {
-        var address = new SignalProtocolAddress(number, 1);
-        store.storePreKey(address.toString(), testKey).then(function() {
-          return store.loadPreKey(address.toString()).then(function(key) {
-            assertEqualArrayBuffers(key.pubKey, testKey.pubKey);
-            assertEqualArrayBuffers(key.privKey, testKey.privKey);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('loadPreKey', function() {
-      it('returns prekeys that exist', function(done) {
-        var address = new SignalProtocolAddress(number, 1);
-        store.storePreKey(address.toString(), testKey).then(function() {
-          return store.loadPreKey(address.toString()).then(function(key) {
-            assertEqualArrayBuffers(key.pubKey, testKey.pubKey);
-            assertEqualArrayBuffers(key.privKey, testKey.privKey);
-          });
-        }).then(done,done);
-      });
-      it('returns undefined for prekeys that do not exist', function(done) {
-        var address = new SignalProtocolAddress(number, 2);
-        store.loadPreKey(2).then(function(key) {
-          assert.isUndefined(key);
-        }).then(done,done);
-      });
-    });
-    describe('removePreKey', function() {
-      it('deletes prekeys', function(done) {
-        var address = new SignalProtocolAddress(number, 2);
-        before(function(done) {
-          store.storePreKey(address.toString(), testKey).then(done);
-        });
-        store.removePreKey(address.toString()).then(function() {
-          return store.loadPreKey(address.toString()).then(function(key) {
-            assert.isUndefined(key);
-          });
-        }).then(done,done);
-      });
-    });
-  });
-}
-
-module.exports = testPreKeyStore;
-
-},{"../src/SignalProtocolAddress.js":189,"../src/crypto.js":190,"./test_helpers.js":213,"chai":53}],203:[function(require,module,exports){
-var SessionRecord = require('../src/SessionRecord.js');
-var KeyHelper = require('../src/KeyHelper.js');
-var SessionCipher = require('../src/SessionCipher.js');
-var SessionBuilder = require('../src/SessionBuilder.js');
-var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
-var util = require('../src/helpers.js');
-var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-var SignalProtocolStore = require('./InMemorySignalProtocolStore.js');
-
-describe('SessionBuilder', function() {
-    this.timeout(5000);
-    // var KeyHelper = KeyHelper;
-
-    function generateIdentity(store) {
-        return Promise.all([
-            KeyHelper.generateIdentityKeyPair(),
-            KeyHelper.generateRegistrationId(),
-        ]).then(function(result) {
-            store.put('identityKey', result[0]);
-            store.put('registrationId', result[1]);
-        });
-    }
-
-    function generatePreKeyBundle(store, preKeyId, signedPreKeyId) {
-        return Promise.all([
-            store.getIdentityKeyPair(),
-            store.getLocalRegistrationId()
-        ]).then(function(result) {
-            var identity = result[0];
-            var registrationId = result[1];
-
-            return Promise.all([
-                KeyHelper.generatePreKey(preKeyId),
-                KeyHelper.generateSignedPreKey(identity, signedPreKeyId),
-            ]).then(function(keys) {
-                var preKey = keys[0]
-                var signedPreKey = keys[1];
-
-                store.storePreKey(preKeyId, preKey.keyPair);
-                store.storeSignedPreKey(signedPreKeyId, signedPreKey.keyPair);
-
-                return {
-                    identityKey: identity.pubKey,
-                    registrationId : registrationId,
-                    preKey:  {
-                        keyId     : preKeyId,
-                        publicKey : preKey.keyPair.pubKey
-                    },
-                    signedPreKey: {
-                        keyId     : signedPreKeyId,
-                        publicKey : signedPreKey.keyPair.pubKey,
-                        signature : signedPreKey.signature
-                    }
-                };
-            });
-        });
-    }
-
-    var ALICE_ADDRESS = new SignalProtocolAddress("+14151111111", 1);
-    var BOB_ADDRESS   = new SignalProtocolAddress("+14152222222", 1);
-
-    describe("basic prekey v3", function() {
-        var aliceStore = new SignalProtocolStore();
-
-        var bobStore = new SignalProtocolStore();
         var bobPreKeyId = 1337;
         var bobSignedKeyId = 1;
 
-        var Curve = require('../src/Curve.js').Curve;
-
-        before(function(done) {
-            Promise.all([
-                generateIdentity(aliceStore),
-                generateIdentity(bobStore),
-            ]).then(function() {
-                return generatePreKeyBundle(bobStore, bobPreKeyId, bobSignedKeyId);
-            }).then(function(preKeyBundle) {
-                var builder = new SessionBuilder(aliceStore, BOB_ADDRESS);
-                return builder.processPreKey(preKeyBundle).then(function() {
-                    done();
-                });
-            }).catch(done);
-        });
-
-        var originalMessage = util.toArrayBuffer("L'homme est condamné à être libre");
-        var aliceSessionCipher = new SessionCipher(aliceStore, BOB_ADDRESS);
-        var bobSessionCipher = new SessionCipher(bobStore, ALICE_ADDRESS);
-
-        it('creates a session', function(done) {
-            aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
-                assert.isDefined(record);
-                var sessionRecord = SessionRecord.deserialize(record);
-                assert.isTrue(sessionRecord.haveOpenSession());
-                assert.isDefined(sessionRecord.getOpenSession());
-            }).then(done, done);
-        });
-
-        it('the session can encrypt', function(done) {
-            aliceSessionCipher.encrypt(originalMessage).then(function(ciphertext) {
-
-                assert.strictEqual(ciphertext.type, 3); // PREKEY_BUNDLE
-
-                return bobSessionCipher.decryptPreKeyWhisperMessage(ciphertext.body, 'binary');
-
-            }).then(function(plaintext) {
-
-                assertEqualArrayBuffers(plaintext, originalMessage);
-
-            }).then(done, done);
-        });
-
-        it('the session can decrypt', function(done) {
-            bobSessionCipher.encrypt(originalMessage).then(function(ciphertext) {
-
-                return aliceSessionCipher.decryptWhisperMessage(ciphertext.body, 'binary');
-
-            }).then(function(plaintext) {
-
-                assertEqualArrayBuffers(plaintext, originalMessage);
-
-            }).then(done, done);
-        });
-
-        it('accepts a new preKey with the same identity', function(done) {
-            generatePreKeyBundle(bobStore, bobPreKeyId + 1, bobSignedKeyId + 1).then(function(preKeyBundle) {
-                var builder = new SessionBuilder(aliceStore, BOB_ADDRESS);
-                return builder.processPreKey(preKeyBundle).then(function() {
-                    return aliceStore.loadSession(BOB_ADDRESS.toString()).then(function(record) {
-                        assert.isDefined(record);
-                        var sessionRecord = SessionRecord.deserialize(record);
-                        assert.isTrue(sessionRecord.haveOpenSession());
-                        assert.isDefined(sessionRecord.getOpenSession());
-                        done();
-                    });
-                });
-            }).catch(done);
-        });
-
-        it('rejects untrusted identity keys', function(done) {
-            KeyHelper.generateIdentityKeyPair().then(function(newIdentity) {
-                var builder = new SessionBuilder(aliceStore, BOB_ADDRESS);
-                return builder.processPreKey({
-                    identityKey: newIdentity.pubKey,
-                    registrationId : 12356
-                }).then(function(e) {
-                    assert.fail('should not be trusted');
-                }).catch(function(e) {
-                    assert.strictEqual(e.message, 'Identity key changed');
-                    done();
-                }).catch(done);
-            });
-        });
-    });
-});
-
-},{"../src/Curve.js":182,"../src/KeyHelper.js":183,"../src/SessionBuilder.js":185,"../src/SessionCipher.js":186,"../src/SessionRecord.js":188,"../src/SignalProtocolAddress.js":189,"../src/helpers.js":195,"./InMemorySignalProtocolStore.js":198,"./test_helpers.js":213,"chai":53}],204:[function(require,module,exports){
-/*
- * vim: ts=4:sw=4
- */
-'use strict';
-
-var util = require('../src/helpers.js');
-var TestVectors = require('./testvectors.js');
-var SignalProtocolStore = require('./InMemorySignalProtocolStore.js');
-var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
-var SessionCipher = require('../src/SessionCipher.js');
-var Crypto = require('../src/crypto.js');
-var SessionRecord = require('../src/SessionRecord.js');
-var SessionBuilder = require('../src/SessionBuilder.js');
-var textsecure = require('./temp_helpers.js');
-var protobuf = require('../build/protobufs_concat.js');
-var assert = require('chai').assert;
-
-describe('SessionCipher', function() {
-    describe('getRemoteRegistrationId', function() {
-        var store = new SignalProtocolStore();
-        var registrationId = 1337;
-        var address = new SignalProtocolAddress('foo', 1);
-        var sessionCipher = new SessionCipher(store, address.toString());
-        describe('when a record exists', function() {
-            before(function(done) {
-                var record = new SessionRecord('identityKey', registrationId);
-                store.storeSession(address.toString(), record.serialize()).then(done);
-            });
-            it('returns a valid registrationId', function(done) {
-                sessionCipher.getRemoteRegistrationId().then(function(value) {
-                    assert.strictEqual(value, registrationId);
-                }).then(done,done);
-            });
-        });
-        describe('when a record does not exist', function() {
-            it('returns undefined', function(done) {
-                var sessionCipher = new SessionCipher(store, 'bar.1');
-                sessionCipher.getRemoteRegistrationId().then(function(value) {
-                    assert.isUndefined(value);
-                }).then(done,done);
-            });
-        });
-    });
-
-    describe('hasOpenSession', function() {
-        var store = new SignalProtocolStore();
-        var address = new SignalProtocolAddress('foo', 1);
-        var sessionCipher = new SessionCipher(store, address.toString());
-        describe('registrationId is valid', function() {
-            before(function(done) {
-                var record = new SessionRecord('identityKey', 1);
-                store.storeSession(address.toString(), record.serialize()).then(done);
-            });
-            it('returns true for a session with a valid registrationId', function(done) {
-                sessionCipher.hasOpenSession(address.toString()).then(function(value) {
-                    assert.isTrue(value);
-                }).then(done,done);
-            });
-        });
-        describe('registrationId is null', function() {
-            before(function(done) {
-                var record = new SessionRecord('identityKey');
-                store.storeSession(address.toString(), record.serialize()).then(done);
-            });
-            it('returns false for a session with a null registrationId', function(done) {
-                sessionCipher.hasOpenSession(address.toString()).then(function(value) {
-                    assert.isFalse(value);
-                }).then(done,done);
-            });
-        });
-        describe('when there is no session', function() {
-            it('returns false', function(done) {
-                sessionCipher.hasOpenSession('bar').then(function(value) {
-                    assert.isFalse(value);
-                }).then(done,done);
-            });
-        });
-    });
-
-
-    function setupReceiveStep(store, data, privKeyQueue) {
-        if (data.newEphemeralKey !== undefined) {
-            privKeyQueue.push(data.newEphemeralKey);
-        }
-
-        if (data.ourIdentityKey === undefined) {
-            return Promise.resolve();
-        }
-
-      return Crypto.crypto.createKeyPair(data.ourIdentityKey).then(function(keyPair) {
-            store.put('identityKey', keyPair);
-        }).then(function() {
-            return Crypto.crypto.createKeyPair(data.ourSignedPreKey);
-        }).then(function(signedKeyPair) {
-            store.storeSignedPreKey(data.signedPreKeyId, signedKeyPair);
-        }).then(function() {
-            if (data.ourPreKey !== undefined) {
-                return Crypto.crypto.createKeyPair(data.ourPreKey).then(function(keyPair) {
-                    store.storePreKey(data.preKeyId, keyPair);
-                });
-            }
-        });
+        return Promise.all([
+            generateIdentity(aliceStore),
+            generateIdentity(bobStore),
+        ]).then(function() {
+            return generatePreKeyBundle(bobStore, bobPreKeyId, bobSignedKeyId);
+        }).then(function(preKeyBundle) {
+            var builder = new signal.SessionBuilder(aliceStore, BOB_ADDRESS);
+            return builder.processPreKey(preKeyBundle);
+        }).then(function () {
+            var aliceSessionCipher = new signal.SessionCipher(aliceStore, BOB_ADDRESS);
+            var bobSessionCipher = new signal.SessionCipher(bobStore, ALICE_ADDRESS);
+            return [ aliceSessionCipher, bobSessionCipher ];
+        })
     }
 
-    function getPaddedMessageLength(messageLength) {
-        var messageLengthWithTerminator = messageLength + 1;
-        var messagePartCount            = Math.floor(messageLengthWithTerminator / 160);
-
-        if (messageLengthWithTerminator % 160 !== 0) {
-            messagePartCount++;
-        }
-
-        return messagePartCount * 160;
-    }
-    function pad(plaintext) {
-      var paddedPlaintext = new Uint8Array(
-          getPaddedMessageLength(plaintext.byteLength + 1) - 1
-      );
-      paddedPlaintext.set(new Uint8Array(plaintext));
-      paddedPlaintext[plaintext.byteLength] = 0x80;
-
-      return paddedPlaintext.buffer;
-    }
-
-    function unpad(paddedPlaintext) {
-        paddedPlaintext = new Uint8Array(paddedPlaintext);
-        var plaintext;
-        for (var i = paddedPlaintext.length - 1; i >= 0; i--) {
-            if (paddedPlaintext[i] == 0x80) {
-                plaintext = new Uint8Array(i);
-                plaintext.set(paddedPlaintext.subarray(0, i));
-                plaintext = plaintext.buffer;
-                break;
-            } else if (paddedPlaintext[i] !== 0x00) {
-                throw new Error('Invalid padding');
-            }
-        }
-        return plaintext;
-    }
-
-    function doReceiveStep(store, data, privKeyQueue, address) {
-        return setupReceiveStep(store, data, privKeyQueue).then(function() {
-            var sessionCipher = new SessionCipher(store, address);
-
-            if (data.type == textsecure.protobuf.IncomingPushMessageSignal.Type.CIPHERTEXT) {
-                return sessionCipher.decryptWhisperMessage(data.message).then(unpad);
-            }
-            else if (data.type == textsecure.protobuf.IncomingPushMessageSignal.Type.PREKEY_BUNDLE) {
-                return sessionCipher.decryptPreKeyWhisperMessage(data.message).then(unpad);
-            } else {
-                throw new Error("Unknown data type in test vector");
-            }
-
-        }).then(function checkResult(plaintext) {
-            var content = textsecure.protobuf.PushMessageContent.decode(plaintext);
-            if (data.expectTerminateSession) {
-                if (content.flags == textsecure.protobuf.PushMessageContent.Flags.END_SESSION) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return content.body == data.expectedSmsText;
-        }).catch(function checkException(e) {
-            if (data.expectException) {
-                return true;
-            }
-            throw e;
-        });
-    }
-
-    function setupSendStep(store, data, privKeyQueue) {
-        if (data.registrationId !== undefined) {
-            store.put('registrationId', data.registrationId);
-        }
-        if (data.ourBaseKey !== undefined) {
-            privKeyQueue.push(data.ourBaseKey);
-        }
-        if (data.ourEphemeralKey !== undefined) {
-            privKeyQueue.push(data.ourEphemeralKey);
-        }
-
-        if (data.ourIdentityKey !== undefined) {
-            return Crypto.crypto.createKeyPair(data.ourIdentityKey).then(function(keyPair) {
-                store.put('identityKey', keyPair);
-            });
-        }
-        return Promise.resolve();
-    }
-
-    function doSendStep(store, data, privKeyQueue, address) {
-        return setupSendStep(store, data, privKeyQueue).then(function() {
-            if (data.getKeys !== undefined) {
-                var deviceObject = {
-                    encodedNumber  : address.toString(),
-                    identityKey    : data.getKeys.identityKey,
-                    preKey         : data.getKeys.devices[0].preKey,
-                    signedPreKey   : data.getKeys.devices[0].signedPreKey,
-                    registrationId : data.getKeys.devices[0].registrationId
-                };
-
-                var builder = new SessionBuilder(store, address);
-
-                return builder.processPreKey(deviceObject);
-            }
-        }).then(function() {
-
-            var proto = new textsecure.protobuf.PushMessageContent();
-            if (data.endSession) {
-                proto.flags = textsecure.protobuf.PushMessageContent.Flags.END_SESSION;
-            } else {
-                proto.body = data.smsText;
-            }
-
-            var sessionCipher = new SessionCipher(store, address);
-            return sessionCipher.encrypt(pad(proto.toArrayBuffer())).then(function(msg) {
-                //XXX: This should be all we do: isEqual(data.expectedCiphertext, encryptedMsg, false);
-                if (msg.type == 1) {
-                    return util.isEqual(data.expectedCiphertext, msg.body);
-                } else {
-                    if (new Uint8Array(data.expectedCiphertext)[0] !== msg.body.charCodeAt(0)) {
-                        throw new Error("Bad version byte");
-                    }
-
-                    var expected = protobuf.PreKeyWhisperMessage.decode(
-                        data.expectedCiphertext.slice(1)
-                    ).encode();
-
-                    if (!util.isEqual(expected, msg.body.substring(1))) {
-                        throw new Error("Result does not match expected ciphertext");
-                    }
-
-                    return true;
-                }
-            }).then(function(res) {
-                if (data.endSession) {
-                    return sessionCipher.closeOpenSessionForDevice().then(function() {
-                        return res;
-                    });
-                }
-                return res;
-            });
-        });
-    }
-
-    function getDescription(step) {
-        var direction = step[0];
-        var data = step[1];
-        if (direction === "receiveMessage") {
-            if (data.expectTerminateSession) {
-                return 'receive end session message';
-            } else if (data.type === 3) {
-                return 'receive prekey message ' + data.expectedSmsText;
-            } else {
-                return 'receive message ' + data.expectedSmsText;
-            }
-        } else if (direction === "sendMessage") {
-            if (data.endSession) {
-                return 'send end session message';
-            } else if (data.ourIdentityKey) {
-                return 'send prekey message ' + data.smsText;
-            } else {
-                return 'send message ' + data.smsText;
-            }
-        }
-    }
-
-    TestVectors.forEach(function(test) {
-        describe(test.name, function(done) {
-            this.timeout(20000);
-
-            var privKeyQueue = [];
-            var origCreateKeyPair = Crypto.crypto.createKeyPair;
-
-            before(function() {
-                // Shim createKeyPair to return predetermined keys from
-                // privKeyQueue instead of random keys.
-                Crypto.crypto.createKeyPair = function(privKey) {
-                    if (privKey !== undefined) {
-                        return origCreateKeyPair(privKey);
-                    }
-                    if (privKeyQueue.length == 0) {
-                        throw new Error('Out of private keys');
-                    } else {
-                        var privKey = privKeyQueue.shift();
-                        return Crypto.crypto.createKeyPair(privKey).then(function(keyPair) {
-                            var a = btoa(util.toString(keyPair.privKey));
-                            var b = btoa(util.toString(privKey));
-                            if (util.toString(keyPair.privKey) != util.toString(privKey))
-                                throw new Error('Failed to rederive private key!');
-                            else
-                                return keyPair;
-                        });
-                    }
-                }
-            });
-
-            after(function() {
-                Crypto.crypto.createKeyPair = origCreateKeyPair;
-                if (privKeyQueue.length != 0) {
-                    throw new Error('Leftover private keys');
-                }
-            });
-
-            function describeStep(step) {
-                var direction = step[0];
-                var data = step[1];
-                if (direction === "receiveMessage") {
-                    if (data.expectTerminateSession) {
-                        return 'receive end session message';
-                    } else if (data.type === 3) {
-                        return 'receive prekey message ' + data.expectedSmsText;
-                    } else {
-                        return 'receive message ' + data.expectedSmsText;
-                    }
-                } else if (direction === "sendMessage") {
-                    if (data.endSession) {
-                        return 'send end session message';
-                    } else if (data.ourIdentityKey) {
-                        return 'send prekey message ' + data.smsText;
-                    } else {
-                        return 'send message ' + data.smsText;
-                    }
-                }
-            }
-
-            var store = new SignalProtocolStore();
-            var address = SignalProtocolAddress.fromString("SNOWDEN.1");
-            test.vectors.forEach(function(step) {
-                it(getDescription(step), function(done) {
-                    var doStep;
-
-                    if (step[0] === "receiveMessage") {
-                        doStep = doReceiveStep;
-                    } else if (step[0] === "sendMessage") {
-                        doStep = doSendStep;
-                    } else {
-                        throw new Error('Invalid test');
-                    }
-
-                    doStep(store, step[1], privKeyQueue, address)
-                        .then(assert).then(done, done);
-                });
-            });
-        });
-    });
-});
-
-},{"../build/protobufs_concat.js":3,"../src/SessionBuilder.js":185,"../src/SessionCipher.js":186,"../src/SessionRecord.js":188,"../src/SignalProtocolAddress.js":189,"../src/crypto.js":190,"../src/helpers.js":195,"./InMemorySignalProtocolStore.js":198,"./temp_helpers.js":212,"./testvectors.js":214,"chai":53}],205:[function(require,module,exports){
-var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
-var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-function testSessionStore(store) {
-  describe('SessionStore', function() {
-    var number = '+5558675309';
-    var testRecord = 'an opaque string';
-    describe('storeSession', function() {
-      var address = new SignalProtocolAddress(number, 1);
-      it('stores sessions encoded as strings', function(done) {
-        store.storeSession(address.toString(), testRecord).then(function() {
-          store.loadSession(address.toString()).then(function(record) {
-            assert.strictEqual(record, testRecord);
-          });
-        }).then(done,done);
-      });
-      it('stores sessions encoded as array buffers', function(done) {
-        var testRecord = new Uint8Array([1,2,3]).buffer;
-        store.storeSession(address.toString(), testRecord).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
-            assertEqualArrayBuffers(testRecord, record);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('loadSession', function() {
-      it('returns sessions that exist', function(done) {
-        var address = new SignalProtocolAddress(number, 1);
-        var testRecord = 'an opaque string';
-        store.storeSession(address.toString(), testRecord).then(function() {
-          return store.loadSession(address.toString()).then(function(record) {
-            assert.strictEqual(record, testRecord);
-          });
-        }).then(done,done);
-      });
-      it('returns undefined for sessions that do not exist', function(done) {
-        var address = new SignalProtocolAddress(number, 2);
-        store.loadSession(address.toString()).then(function(record) {
-          assert.isUndefined(record);
-        }).then(done,done);
-      });
-    });
-    describe('removeSession', function() {
-      it('deletes sessions', function(done) {
-        var address = new SignalProtocolAddress(number, 1);
-        before(function(done) {
-          store.storeSession(address.toString(), testRecord).then(done);
-        });
-        store.removeSession(address.toString()).then(function() {
-          store.loadSession(address.toString()).then(function(record) {
-            assert.isUndefined(record);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('removeAllSessions', function() {
-      it('removes all sessions for a number', function(done) {
-        var devices = [1, 2, 3].map(function(deviceId) {
-          var address = new SignalProtocolAddress(number, deviceId);
-          return address.toString();
-        });
-        var promise = Promise.resolve();
-        devices.forEach(function(encodedNumber) {
-          promise = promise.then(function() {
-            return store.storeSession(encodedNumber, testRecord + encodedNumber);
-          });
-        });
-        promise.then(function() {
-          store.removeAllSessions(number).then(function(record) {
-            return Promise.all(devices.map(store.loadSession.bind(store))).then(function(records) {
-              for (var i in records) {
-                assert.isUndefined(records[i]);
-              };
-            });
-          });
-        }).then(done,done);
-      });
-    });
+  it('can encrypt + decrypt a long message', function (done) {
+      bobAliceSessionCiphers()
+          .then(function ([ aliceSessionCipher, bobSessionCipher ]) {
+        // var plaintext = "Hello world";
+              var plaintext = require('./long-plaintext.json').plaintext;
+              var b = new Buffer(plaintext, 'utf-8');
+              aliceSessionCipher.encrypt(b)
+                  .then(c => bobSessionCipher.decryptPreKeyWhisperMessage(c.body, 'binary'))
+                  .then(decodedPlaintext => {
+                      console.log('expected', b)
+                      console.log('decoded', new Buffer(decodedPlaintext))
+                      assert.equal(plaintext,new Buffer(decodedPlaintext));
+                      done();
+                  }).catch(function (err) {
+                      assert.isUndefined(err);
+                  });
+          })
   });
+})
+
+}).call(this,require("buffer").Buffer)
+},{"..":192,"../src/helpers.js":191,"./InMemorySignalProtocolStore.js":193,"./long-plaintext.json":195,"buffer":50,"chai":53}],195:[function(require,module,exports){
+module.exports={
+    "plaintext": "I have a kind of weird story related to death. Something my father told me. He said it was an actual experience he had when he was in his early twenties. Just the age I am now. I’ve heard the story so many times I can remember every detail. It’s a really strange story—it’s hard even now for me to believe it actually happened— but my father isn’t the type to lie about something like that. Or the type who would concoct such a story. I’m sure you know this, but when you make up a story the details change each time you retell it. You tend to embellish things, and forget what you said before. ... But my father’s story, from start to finish, was always exactly the same, each time he told it. So I think it must be something he actually experienced. I’m his son, and I know him really well, so the only thing I can do is believe what he said. But you don’t know my father, Tsukuru, so feel free to believe it or not. Just understand that this is what he told me. You can take it as folklore, or a tale of the supernatural, I don’t mind. It’s a long story, and it’s already late, but do you mind if I tell it?” Sure, Tsukuru said, that would be fine. I’m not sleepy yet. “When my father was young, he spent a year wandering around Japan,” Haida began. “This was at the end of the 1960s, the peak of the counterculture era, when the student movement was upending universities. I don’t know all the details, but when he was in college in Tokyo, a lot of stupid things happened, and he got fed up with politics and left the movement. He took a leave of absence from school and wandered around the country. He did odd jobs to earn a living, read books when he had the time, met all sorts of people, and gained a lot of real-life, practical experience. My father says this was the happiest time of his life, when he learned some important lessons. When I was a kid, he used to tell me stories from those days, like an old soldier reminiscing about long-ago battles in some far-off place. After those bohemian days, he went back to college, and returned to academic life. He never went on a long trip ever again. As far as I know, he’s spent his time since just shuttling back and forth between home and his office. It’s strange, isn’t it? No matter how quiet and conformist a person’s life seems, there’s always a time in the past when they reached an impasse. A time when they went a little crazy. I guess people need that sort of stage in their lives.” 549. The Rime of the Ancient Mariner PART I An ancient Mariner meeteth three gallants bidden to a wedding feast, and detaineth one.IT is an ancient Mariner, And he stoppeth one of three. 'By thy long beard and glittering eye, Now wherefore stopp'st thou me? The Bridegroom's doors are opened wide,5 And I am next of kin; The guests are met, the feast is set: May'st hear the merry din.' He holds him with his skinny hand, 'There was a ship,' quoth he."
 }
 
-module.exports = testSessionStore;
 
-},{"../src/SignalProtocolAddress.js":189,"./test_helpers.js":213,"chai":53}],206:[function(require,module,exports){
-var SignalProtocolAddress = require('../src/SignalProtocolAddress.js');
-var assert = require('chai').assert;
+},{}],196:[function(require,module,exports){
+// /* vim: ts=4:sw=4 */
 
-describe('SignalProtocolAddress', function() {
-  var name = 'name';
-  var deviceId = 42;
-  var string = 'name.42';
-  describe('getName', function() {
-    it('returns the name', function() {
-      var address = new SignalProtocolAddress(name, 1);
-      assert.strictEqual(name, address.getName());
-    });
-  });
-  describe('getDeviceId', function() {
-    it('returns the deviceId', function() {
-      var address = new SignalProtocolAddress(name, deviceId);
-      assert.strictEqual(deviceId, address.getDeviceId());
-    });
-  });
-  describe('toString', function() {
-    it('returns the address', function() {
-      var address = new SignalProtocolAddress(name, deviceId);
-      assert.strictEqual(string, address.toString());
-    });
-  });
-  describe('fromString', function() {
-    it('throws on a bad inputs', function() {
-      [ '', null, {} ].forEach(function(input) {
-        assert.throws(function() {
-          var address = SignalProtocolAddress.fromString(input);
-        });
-      });
-    });
-    it('constructs the address', function() {
-      var address = SignalProtocolAddress.fromString(string);
-      assert.strictEqual(deviceId, address.getDeviceId());
-      assert.strictEqual(name, address.getName());
-    });
-  });
-});
-
-},{"../src/SignalProtocolAddress.js":189,"chai":53}],207:[function(require,module,exports){
-/* vim: ts=4:sw=4 */
-
-'use strict';
-
-var Crypto = require('../src/crypto.js');
-var SignalProtocolStore = require('./InMemorySignalProtocolStore.js');
-var assert = require('chai').assert;
-
-
-function testSignalProtocolStore (testIdentityKeyStore, testPreKeyStore, testSignedPreKeyStore, testSessionStore) {
-  describe("SignalProtocolStore", function() {
-    var store = new SignalProtocolStore();
-    var registrationId = 1337;
-    var identityKey = {
-      pubKey: Crypto.crypto.getRandomBytes(33),
-      privKey: Crypto.crypto.getRandomBytes(32),
-    };
-    before(function() {
-      store.put('registrationId', registrationId);
-      store.put('identityKey', identityKey);
-    });
-    testIdentityKeyStore(store, registrationId, identityKey);
-    testPreKeyStore(store);
-    testSignedPreKeyStore(store);
-    testSessionStore(store);
-  });
-}
-
-module.exports = testSignalProtocolStore;
-
-},{"../src/crypto.js":190,"./InMemorySignalProtocolStore.js":198,"chai":53}],208:[function(require,module,exports){
-var Crypto = require('../src/crypto.js');
-var assert = require('chai').assert;
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-function testSignedPreKeyStore(store) {
-  describe('SignedPreKeyStore', function() {
-    var testKey;
-    before(function(done) {
-      Crypto.crypto.createKeyPair().then(function(keyPair) {
-        testKey = keyPair;
-      }).then(done,done);
-    });
-    describe('storeSignedPreKey', function() {
-      it('stores signed prekeys', function(done) {
-        store.storeSignedPreKey(3, testKey).then(function() {
-          return store.loadSignedPreKey(3).then(function(key) {
-            assertEqualArrayBuffers(key.pubKey, testKey.pubKey);
-            assertEqualArrayBuffers(key.privKey, testKey.privKey);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('loadSignedPreKey', function() {
-      it('returns prekeys that exist', function(done) {
-        store.storeSignedPreKey(1, testKey).then(function() {
-          return store.loadSignedPreKey(1).then(function(key) {
-            assertEqualArrayBuffers(key.pubKey, testKey.pubKey);
-            assertEqualArrayBuffers(key.privKey, testKey.privKey);
-          });
-        }).then(done,done);
-      });
-      it('returns undefined for prekeys that do not exist', function(done) {
-        store.storeSignedPreKey(1, testKey).then(function() {
-          store.loadSignedPreKey(2).then(function(key) {
-            assert.isUndefined(key);
-          });
-        }).then(done,done);
-      });
-    });
-    describe('removeSignedPreKey', function() {
-      it('deletes signed prekeys', function(done) {
-        before(function(done) {
-          store.storeSignedPreKey(4, testKey).then(done);
-        });
-        store.removeSignedPreKey(4, testKey).then(function() {
-          return store.loadSignedPreKey(4).then(function(key) {
-            assert.isUndefined(key);
-          });
-        }).then(done,done);
-      });
-    });
-  });
-}
-
-module.exports = testSignedPreKeyStore;
-
-},{"../src/crypto.js":190,"./test_helpers.js":213,"chai":53}],209:[function(require,module,exports){
-/*
- * vim: ts=4:sw=4
- */
-
-'use strict';
-// window.assert = chai.assert;
-
-var assert = require('chai').assert;
-var Crypto = require('../src/crypto.js');
-var worker = require('../src/curve25519_worker_manager.js');
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-
-describe("Crypto", function() {
-  describe("Encrypt AES-CBC", function() {
-    it('works', function(done) {
-      var key = hexToArrayBuffer('603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4');
-      var iv = hexToArrayBuffer('000102030405060708090a0b0c0d0e0f');
-      var plaintext  = hexToArrayBuffer('6bc1bee22e409f96e93d7e117393172aae2d8a571e03ac9c9eb76fac45af8e5130c81c46a35ce411e5fbc1191a0a52eff69f2445df4f9b17ad2b417be66c3710');
-      var ciphertext = hexToArrayBuffer('f58c4c04d6e5f1ba779eabfb5f7bfbd69cfc4e967edb808d679f777bc6702c7d39f23369a9d9bacfa530e26304231461b2eb05e2c39be9fcda6c19078c6a9d1b3f461796d6b0d6b2e0c2a72b4d80e644');
-      Crypto.crypto.encrypt(key, plaintext, iv).then(function(result) {
-        assertEqualArrayBuffers(result, ciphertext);
-      }).then(done).catch(done);
-    });
-  });
-
-  describe("Decrypt AES-CBC", function() {
-    it('works', function(done) {
-      var key = hexToArrayBuffer('603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4');
-      var iv = hexToArrayBuffer('000102030405060708090a0b0c0d0e0f');
-      var plaintext  = hexToArrayBuffer('6bc1bee22e409f96e93d7e117393172aae2d8a571e03ac9c9eb76fac45af8e5130c81c46a35ce411e5fbc1191a0a52eff69f2445df4f9b17ad2b417be66c3710');
-      var ciphertext = hexToArrayBuffer('f58c4c04d6e5f1ba779eabfb5f7bfbd69cfc4e967edb808d679f777bc6702c7d39f23369a9d9bacfa530e26304231461b2eb05e2c39be9fcda6c19078c6a9d1b3f461796d6b0d6b2e0c2a72b4d80e644');
-      Crypto.crypto.decrypt(key, ciphertext, iv).then(function(result) {
-        assertEqualArrayBuffers(result, plaintext);
-      }).then(done).catch(done);
-    });
-  });
-
-  describe("HMAC SHA-256", function() {
-    it("works", function(done) {
-      var key = hexToArrayBuffer('6f35628d65813435534b5d67fbdb54cb33403d04e843103e6399f806cb5df95febbdd61236f33245');
-      var input = hexToArrayBuffer('752cff52e4b90768558e5369e75d97c69643509a5e5904e0a386cbe4d0970ef73f918f675945a9aefe26daea27587e8dc909dd56fd0468805f834039b345f855cfe19c44b55af241fff3ffcd8045cd5c288e6c4e284c3720570b58e4d47b8feeedc52fd1401f698a209fccfa3b4c0d9a797b046a2759f82a54c41ccd7b5f592b');
-      var mac = hexToArrayBuffer('05d1243e6465ed9620c9aec1c351a186');
-      Crypto.crypto.sign(key, input).then(function(result) {
-        assertEqualArrayBuffers(result.slice(0, mac.byteLength), mac);
-      }).then(done).catch(done);
-    });
-  });
-
-
-  describe("HKDF", function() {
-    it('works', function(done) {
-      // HMAC RFC5869 Test vectors
-      var T1 = hexToArrayBuffer("3cb25f25faacd57a90434f64d0362f2a2d2d0a90cf1a5a4c5db02d56ecc4c5bf");
-      var T2 = hexToArrayBuffer("34007208d5b887185865");
-      var IKM = new Uint8Array(new ArrayBuffer(22));
-      for (var i = 0; i < 22; i++)
-        IKM[i] = 11;
-
-      var salt = new Uint8Array(new ArrayBuffer(13));
-      for (var i = 0; i < 13; i++)
-        salt[i] = i;
-
-      var info = new Uint8Array(new ArrayBuffer(10));
-      for (var i = 0; i < 10; i++)
-        info[i] = 240 + i;
-
-      Crypto.crypto.HKDF(IKM.buffer, salt.buffer, info.buffer).then(function(OKM){
-        assertEqualArrayBuffers(OKM[0], T1);
-        assertEqualArrayBuffers(OKM[1].slice(0, 10), T2);
-      }).then(done).catch(done);
-    });
-  });
-
-  function testCurve25519() {
-    var alice_bytes = hexToArrayBuffer("77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a");
-    var alice_priv  = hexToArrayBuffer("70076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c6a");
-    var alice_pub   = hexToArrayBuffer("058520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a");
-    var bob_bytes   = hexToArrayBuffer("5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb");
-    var bob_priv    = hexToArrayBuffer("58ab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e06b");
-    var bob_pub     = hexToArrayBuffer("05de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f");
-    var shared_sec  = hexToArrayBuffer("4a5d9d5ba4ce2de1728e3bf480350f25e07e21c947d19e3376f09b3c1e161742");
-
-    describe("createKeyPair", function() {
-      it ('converts alice private keys to a keypair', function(done) {
-        Crypto.crypto.createKeyPair(alice_bytes).then(function(keypair) {
-          assertEqualArrayBuffers(keypair.privKey, alice_priv);
-          assertEqualArrayBuffers(keypair.pubKey, alice_pub);
-          done();
-        }).catch(done);
-      });
-      it ('converts bob private keys to a keypair', function(done) {
-        Crypto.crypto.createKeyPair(bob_bytes).then(function(keypair) {
-          assertEqualArrayBuffers(keypair.privKey, bob_priv);
-          assertEqualArrayBuffers(keypair.pubKey, bob_pub);
-          done();
-        }).catch(done);
-      });
-      it ('generates a key if one is not provided', function(done) {
-        Crypto.crypto.createKeyPair().then(function(keypair) {
-          assert.strictEqual(keypair.privKey.byteLength, 32);
-          assert.strictEqual(keypair.pubKey.byteLength, 33);
-          assert.strictEqual(new Uint8Array(keypair.pubKey)[0], 5);
-          done();
-        }).catch(done);
-      });
-    });
-
-    describe("ECDHE", function() {
-      it("computes the shared secret for alice", function(done) {
-        Crypto.crypto.ECDHE(bob_pub, alice_priv).then(function(secret) {
-          assertEqualArrayBuffers(shared_sec, secret);
-          done();
-        }).catch(done);
-      });
-      it("computes the shared secret for bob", function(done) {
-        Crypto.crypto.ECDHE(alice_pub, bob_priv).then(function(secret) {
-          assertEqualArrayBuffers(shared_sec, secret);
-          done();
-        }).catch(done);
-      });
-    });
-
-    var priv = hexToArrayBuffer("48a8892cc4e49124b7b57d94fa15becfce071830d6449004685e387c62409973");
-    var pub  = hexToArrayBuffer("0555f1bfede27b6a03e0dd389478ffb01462e5c52dbbac32cf870f00af1ed9af3a");
-    var msg  = hexToArrayBuffer("617364666173646661736466");
-    var sig  = hexToArrayBuffer("2bc06c745acb8bae10fbc607ee306084d0c28e2b3bb819133392473431291fd0dfa9c7f11479996cf520730d2901267387e08d85bbf2af941590e3035a545285");
-    describe("Ed25519Sign", function() {
-      // Some self-generated test vectors
-      it('works', function(done) {
-        Crypto.crypto.Ed25519Sign(priv, msg).then(function(sigCalc) {
-          assertEqualArrayBuffers(sig, sigCalc);
-        }).then(done).catch(done);
-      });
-    });
-
-    describe("Ed25519Verify", function() {
-      it("throws on bad signature", function(done) {
-        var badsig = sig.slice(0);
-        new Uint8Array(badsig).set([0], 0);
-
-        Crypto.crypto.Ed25519Verify(pub, msg, badsig).catch(function(e) {
-          if (e.message === 'Invalid signature') {
-            done();
-          } else { throw e; }
-        }).catch(done);
-      });
-
-      it("does not throw on good signature", function(done) {
-        Crypto.crypto.Ed25519Verify(pub, msg, sig).then(done).catch(done);
-      });
-    });
-  }
-
-  describe('curve25519', function() {
-    this.timeout(5000);
-    testCurve25519();
-  });
-  describe('curve25519 in a worker', function() {
-    before(function() {
-      worker.startWorker();
-    });
-    after(function() {
-      worker.stopWorker();
-    });
-    this.timeout(5000);
-    testCurve25519();
-  });
-});
-
-},{"../src/crypto.js":190,"../src/curve25519_worker_manager.js":192,"./test_helpers.js":213,"chai":53}],210:[function(require,module,exports){
-/* vim: ts=4:sw=4 */
-'use strict';
-
-var util = require('../src/helpers.js');
-var assert = require('chai').assert;
-
-describe('util', function() {
-    describe("isEqual", function(){
-        it('returns false when a or b is undefined', function(){
-            assert.isFalse(util.isEqual("defined value", undefined));
-            assert.isFalse(util.isEqual(undefined, "defined value"));
-        });
-        it('returns true when a and b are equal', function(){
-            var a = "same value";
-            var b = "same value";
-            assert.isTrue(util.isEqual(a, b));
-        });
-        it('returns false when a and b are not equal', function(){
-            var a = "same value";
-            var b = "diferent value";
-            assert.isFalse(util.isEqual(a, b));
-        });
-        it('throws an error when a/b compare is too short', function(){
-            var a = "1234";
-            var b = "1234";
-            assert.throw(function() { util.isEqual(a, b) },
-                        Error, /a\/b compare too short/);
-        });
-    });
-});
-
-},{"../src/helpers.js":195,"chai":53}],211:[function(require,module,exports){
-/* vim: ts=4:sw=4 */
-
-require('./helpers_test.js');
-require('./crypto_test.js');
-require('./SessionCipherTest.js');
-require('./KeyHelperTest.js');
-require('./NumericFingerprintTest.js');
-require('./SessionBuilderTest.js');
-var testIdentityKeyStore = require('./IdentityKeyStore_test.js');
-var testPreKeyStore = require('./PreKeyStore_test.js');
-var testSignedPreKeyStore = require('./SignedPreKeyStore_test.js');
-var testSessionStore = require('./SessionStore_test.js');
-require('./SignalProtocolStore_test.js')(
-  testIdentityKeyStore,
-  testPreKeyStore,
-  testSignedPreKeyStore,
-  testSessionStore
-);
-require('./SignalProtocolAddressTest.js');
+// require('./helpers_test.js');
+// require('./crypto_test.js');
+// require('./SessionCipherTest.js');
+// require('./KeyHelperTest.js');
+// require('./NumericFingerprintTest.js');
+// require('./SessionBuilderTest.js');
+// var testIdentityKeyStore = require('./IdentityKeyStore_test.js');
+// var testPreKeyStore = require('./PreKeyStore_test.js');
+// var testSignedPreKeyStore = require('./SignedPreKeyStore_test.js');
+// var testSessionStore = require('./SessionStore_test.js');
+// require('./SignalProtocolStore_test.js')(
+//   testIdentityKeyStore,
+//   testPreKeyStore,
+//   testSignedPreKeyStore,
+//   testSessionStore
+// );
+// require('./SignalProtocolAddressTest.js');
 require('./IntegrationTest.js');
 
-},{"./IdentityKeyStore_test.js":197,"./IntegrationTest.js":199,"./KeyHelperTest.js":200,"./NumericFingerprintTest.js":201,"./PreKeyStore_test.js":202,"./SessionBuilderTest.js":203,"./SessionCipherTest.js":204,"./SessionStore_test.js":205,"./SignalProtocolAddressTest.js":206,"./SignalProtocolStore_test.js":207,"./SignedPreKeyStore_test.js":208,"./crypto_test.js":209,"./helpers_test.js":210}],212:[function(require,module,exports){
-var dcodeIO = require('../build/dcodeIO.js');
-var pushMessages     = dcodeIO.loadProto('package textsecure;\n' +
-'\n' +
-'option java_package = "org.whispersystems.textsecure.push";\n' +
-'option java_outer_classname = "PushMessageProtos";\n' +
-'\n' +
-'message IncomingPushMessageSignal {\n' +
-'  enum Type {\n' +
-'    UNKNOWN                      = 0;\n' +
-'    CIPHERTEXT                   = 1;\n' +
-'    KEY_EXCHANGE                 = 2;\n' +
-'    PREKEY_BUNDLE                = 3;\n' +
-'    PLAINTEXT                    = 4;\n' +
-'    RECEIPT                      = 5;\n' +
-'    PREKEY_BUNDLE_DEVICE_CONTROL = 6;\n' +
-'    DEVICE_CONTROL               = 7;\n' +
-'  }\n' +
-'  optional Type   type         = 1;\n' +
-'  optional string source       = 2;\n' +
-'  optional uint32 sourceDevice = 7;\n' +
-'  optional string relay        = 3;\n' +
-'  optional uint64 timestamp    = 5;\n' +
-'  optional bytes  message      = 6; // Contains an encrypted PushMessageContent\n' +
-'//  repeated string destinations = 4; // No longer supported\n' +
-'}\n' +
-'\n' +
-'message PushMessageContent {\n' +
-'  message AttachmentPointer {\n' +
-'    optional fixed64 id          = 1;\n' +
-'    optional string  contentType = 2;\n' +
-'    optional bytes   key         = 3;\n' +
-'  }\n' +
-'\n' +
-'  message GroupContext {\n' +
-'    enum Type {\n' +
-'      UNKNOWN = 0;\n' +
-'      UPDATE  = 1;\n' +
-'      DELIVER = 2;\n' +
-'      QUIT    = 3;\n' +
-'    }\n' +
-'    optional bytes             id      = 1;\n' +
-'    optional Type              type    = 2;\n' +
-'    optional string            name    = 3;\n' +
-'    repeated string            members = 4;\n' +
-'    optional AttachmentPointer avatar  = 5;\n' +
-'  }\n' +
-'\n' +
-'  enum Flags {\n' +
-'    END_SESSION = 1;\n' +
-'  }\n' +
-'\n' +
-'  optional string            body        = 1;\n' +
-'  repeated AttachmentPointer attachments = 2;\n' +
-'  optional GroupContext      group       = 3;\n' +
-'  optional uint32            flags       = 4;\n' +
-'}').build('textsecure');
-
-module.exports = {
-    protobuf: {
-        IncomingPushMessageSignal : pushMessages.IncomingPushMessageSignal,
-        PushMessageContent        : pushMessages.PushMessageContent,
-    }
-
-};
-
-},{"../build/dcodeIO.js":2}],213:[function(require,module,exports){
-var assert = require('chai').assert;
-
-function assertEqualArrayBuffers(ab1, ab2) {
-  assert.deepEqual(new Uint8Array(ab1), new Uint8Array(ab2));
-};
-
-function hexToArrayBuffer(str) {
-  var ret = new ArrayBuffer(str.length / 2);
-  var array = new Uint8Array(ret);
-  for (var i = 0; i < str.length/2; i++)
-    array[i] = parseInt(str.substr(i*2, 2), 16);
-  return ret;
-};
-
-module.exports = {
-  assertEqualArrayBuffers: assertEqualArrayBuffers,
-  hexToArrayBuffer: hexToArrayBuffer
-};
-
-},{"chai":53}],214:[function(require,module,exports){
-var test_util = require('./test_helpers.js');
-var hexToArrayBuffer = test_util.hexToArrayBuffer;
-var assertEqualArrayBuffers = test_util.assertEqualArrayBuffers;
-// We're gonna throw the finalized tests in here:
-var tests = [];
-
-// The common-case ALICE test vectors themselves...
-var TwoPartyTestVectorsAlice = [
-  ["sendMessage",
-   {
-     smsText: "A",
-     ourBaseKey: hexToArrayBuffer('2060fe31b041d28127ac35cbfe790e2a25f92d2e21eb2251690ae75e732f5c4d'),
-     ourEphemeralKey: hexToArrayBuffer('082e6391deb7154bd0375df3fc07f87020a3b0fd7a8c6c90e73f0e054bc2bf5d'),
-     ourIdentityKey: hexToArrayBuffer('d83d8141aad5f1d62d78a1af09ffbe61f2d3458eeb887a047a58a07565d24463'),
-     registrationId: 10290,
-     getKeys: {identityKey: hexToArrayBuffer('059c2197be51bae703ae2edd26b6ff2b03d589ef4851be33a3f8d923ad86a6b439'),
-               devices: [{
-                 deviceId: 1,
-                 preKey: {keyId: 4611143, publicKey: hexToArrayBuffer('052cd5004a4c31dd7b89b7fc80cc3e62abcf9cf1af014c93ec4589f7ca3e79e65c')},
-                 signedPreKey: {keyId: 14983230, publicKey: hexToArrayBuffer('05a9ecf666ec55fc27988ecc417db0d62dd5e1fa751da1f7a2dd2eca0d14c8bd46'), signature: hexToArrayBuffer('0b46fdb238f1e2df7b28a94ba575e58b0aa1d377bb843602cc8c2a7cd33770fdd741f65a240f7c3086f00f31dc4f3b8ceeab498356f8d5e4bfe6f2dd3eeca98f')},
-                 registrationId: 0xd00d
-               }]
-              },
-     expectedCiphertext: hexToArrayBuffer('3308c7b899021221058a49fa8a94224aaa8f5873404e01710ff9ef02169a75f90af4fbbc600796e0521a21050a6cf5e075c9970f14862db8a703a6c761f50b5182d17874908940556a22372222d301330a2105883ab58b3eb6db93b32bf91899a5b5175e7b21e96fff2cec02c83dff16ba1b271000180022a0013c5d070d1b75c418cef769bd7378a58969537a00e0ff60cbb99defb486fcfb43384264da4ea9821c1336f02d988da38944453331c4b30181704cbcec5a792ab87c5ccff256e0b4d61ba6a30a6964783875018882e66bfbd9445ac44fee9dc67edc2ad9de78adbe0eb7e9cb990272183ce5fac682ee5106f67d732cd16dfb731239590ba67dc827e849c49a9fb5ed8eed41d85d5e6de3294e74f3524c6489c2f25482ff52f9ea29c928b25030bec09207'),
-   }],
-  ["sendMessage",
-   {
-     smsText: "B",
-     expectedCiphertext: hexToArrayBuffer('3308c7b899021221058a49fa8a94224aaa8f5873404e01710ff9ef02169a75f90af4fbbc600796e0521a21050a6cf5e075c9970f14862db8a703a6c761f50b5182d17874908940556a22372222d301330a2105883ab58b3eb6db93b32bf91899a5b5175e7b21e96fff2cec02c83dff16ba1b271001180022a001256aae85babf8c0808f75e08bf10a63f7f3aea97324c2583d777f609df493d7d45232c8883c3e1118fbc29b6318a3091ae57fed4f1c54458c6bb832fbb35f24933cb79765d00f4a161e2877a5a21a26592cdb0aa8a2f70f5fbe8c601ecdff0bef1b733d7fd0cb7b7d8fc1e45f79c016c8f90449239ca1a04b374538f2760eef43127ddc9a6439c6ceca5faf5962fb26d7248257d4d5ee3fe4cf8795acc555718558e5317f618828328b25030bec09207'),
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('330a2105bc81f1348a1d065b2bd2776edb9f29bc4150399db35c1d87dc258b94894bc57a1000180022a001c93af1107634d9eaa1516a4f8e95c6a454c27313b38830709eb863608f08f2f3a598ff8f558645427f7b6ea8e182e40f7b4a92ce0325f2e22f76f36f6954f6f391dd21d2cad12e5b620e75b991e69df8821ab0e826e3cb2ae1c7a1fb8ed72213e36fc508ca1f0a92ebe2089535b5d5e1b34eae5f91497bd072de47de3291ba78a6fd67d3f8f3f20d04ab3a1159df8f36ef7e4696847e32ce6be07edb93763a2226c87feff8cc4827'),
-     type: 1,
-     newEphemeralKey: hexToArrayBuffer('d04f334799ea1272eff64c5267e28274f54b91b3b11372879303eb7a8cd52763'),
-     expectedSmsText: "C",
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('330a2105bc81f1348a1d065b2bd2776edb9f29bc4150399db35c1d87dc258b94894bc57a1001180022a001eb52c72c7bb6b8878c96398cc05810382d29fc17644f88bdc8d57509e8a734626620ae243cb740466806ee3c64bbf12957d5ac0452a17aba6c0e10e2a82626a986df0c4e5cadebb9ce824f1af4fac85cf7d1b9b7cf37f5df06d77b901d0e2aaa772b49f838ec92a67d13b4d7908cf91f7e0a54ad031b2aa4a954180b652f0696350e4f286592e24cc83091b196f2d48397241e33acaf6f65be27af12f1a8af91fd1daf2c01bdfaaa'),
-     type: 1,
-     expectedSmsText: "D",
-   }],
-  ["sendMessage",
-   {
-     smsText: "E",
-     expectedCiphertext: hexToArrayBuffer('330a2105576f3c29717db75ffd19a37154d4d6beba8d796a26c4244793132f7e6cb180491000180122a001bd139a95021d34d9df74d99aa897981aa6718fd6b72d8567891afff92c6e3534ded0de80be7e7c58730a001f2acc1f1e6447f9ca0a99681f3f65d9a4072f3a1fb978740918d3db5c346170edb3bf8fec2b52362edf7138f93cb23a3f17b0f40bf9769e01273955b14c20b6212cbb1f665d1a7e5e770437a53b1727c13bcd639bf5beba71893b8de435244acddc42c3ba592b7debdacdc4dea12dc7e4e670753419be0455e0043f91'),
-   }],
-];
-// Now change the order and make 2 tests out of them:
-tests[tests.length] = {name: "Standard Signal Protocol Test Vectors as Alice", vectors: TwoPartyTestVectorsAlice};
-
-tests[tests.length] = function() {
-  var test = [];
-  test[0] = TwoPartyTestVectorsAlice[0];
-  test[1] = TwoPartyTestVectorsAlice[1];
-
-  test[2] = ["receiveMessage", { message: TwoPartyTestVectorsAlice[3][1].message,
-                                 type: TwoPartyTestVectorsAlice[3][1].type,
-                                 expectedSmsText: TwoPartyTestVectorsAlice[3][1].expectedSmsText,
-                                 newEphemeralKey: TwoPartyTestVectorsAlice[2][1].newEphemeralKey }] ;
-  test[3] = ["receiveMessage", { message: TwoPartyTestVectorsAlice[2][1].message,
-                                 type: TwoPartyTestVectorsAlice[2][1].type,
-                                 expectedSmsText: TwoPartyTestVectorsAlice[2][1].expectedSmsText }];
-
-  test[4] = TwoPartyTestVectorsAlice[4];
-  return {name: "Shuffled Signal Protocol Test Vectors as Alice", vectors: test};
-}();
-
-// The common-case BOB test vectors themselves...
-var TwoPartyTestVectorsBob = [
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308c7b899021221058a49fa8a94224aaa8f5873404e01710ff9ef02169a75f90af4fbbc600796e0521a21050a6cf5e075c9970f14862db8a703a6c761f50b5182d17874908940556a22372222d301330a2105883ab58b3eb6db93b32bf91899a5b5175e7b21e96fff2cec02c83dff16ba1b271000180022a0013c5d070d1b75c418cef769bd7378a58969537a00e0ff60cbb99defb486fcfb43384264da4ea9821c1336f02d988da38944453331c4b30181704cbcec5a792ab87c5ccff256e0b4d61ba6a30a6964783875018882e66bfbd9445ac44fee9dc67edc2ad9de78adbe0eb7e9cb990272183ce5fac682ee5106f67d732cd16dfb731239590ba67dc827e849c49a9fb5ed8eed41d85d5e6de3294e74f3524c6489c2f25482ff52f9ea29c928b25030bec09207'),
-     type: 3,
-     ourPreKey: hexToArrayBuffer('88d9a12e7b03afdac42e49ec9d4e5488e1b1e6d48c6eef6029e45dec09a9d562'),
-     preKeyId: 4611143,
-     ourSignedPreKey: hexToArrayBuffer('888b3f14aff80e36bb2d2cc26a72da2e1a99330962f5066c7c1dded1262ca665'),
-     signedPreKeyId: 14983230,
-     ourIdentityKey: hexToArrayBuffer('58c9fb2ec2c6b13e279e7db57ce837c02aac1531504f71130d167cc8fb25a857'),
-     newEphemeralKey: hexToArrayBuffer('f0b66ac79b6f4ae997636bc8ed622a184dbe00603b2c657ac18800122523d142'),
-     expectedSmsText: "A",
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308c7b899021221058a49fa8a94224aaa8f5873404e01710ff9ef02169a75f90af4fbbc600796e0521a21050a6cf5e075c9970f14862db8a703a6c761f50b5182d17874908940556a22372222d301330a2105883ab58b3eb6db93b32bf91899a5b5175e7b21e96fff2cec02c83dff16ba1b271001180022a001256aae85babf8c0808f75e08bf10a63f7f3aea97324c2583d777f609df493d7d45232c8883c3e1118fbc29b6318a3091ae57fed4f1c54458c6bb832fbb35f24933cb79765d00f4a161e2877a5a21a26592cdb0aa8a2f70f5fbe8c601ecdff0bef1b733d7fd0cb7b7d8fc1e45f79c016c8f90449239ca1a04b374538f2760eef43127ddc9a6439c6ceca5faf5962fb26d7248257d4d5ee3fe4cf8795acc555718558e5317f618828328b25030bec09207'),
-     type: 3,
-     expectedSmsText: "B",
-   }],
-  ["sendMessage",
-   {
-     smsText: "C",
-     expectedCiphertext: hexToArrayBuffer('330a2105bc81f1348a1d065b2bd2776edb9f29bc4150399db35c1d87dc258b94894bc57a1000180022a001c93af1107634d9eaa1516a4f8e95c6a454c27313b38830709eb863608f08f2f3a598ff8f558645427f7b6ea8e182e40f7b4a92ce0325f2e22f76f36f6954f6f391dd21d2cad12e5b620e75b991e69df8821ab0e826e3cb2ae1c7a1fb8ed72213e36fc508ca1f0a92ebe2089535b5d5e1b34eae5f91497bd072de47de3291ba78a6fd67d3f8f3f20d04ab3a1159df8f36ef7e4696847e32ce6be07edb93763a2226c87feff8cc4827'),
-   }],
-  ["sendMessage",
-   {
-     smsText: "D",
-     expectedCiphertext: hexToArrayBuffer('330a2105bc81f1348a1d065b2bd2776edb9f29bc4150399db35c1d87dc258b94894bc57a1001180022a001eb52c72c7bb6b8878c96398cc05810382d29fc17644f88bdc8d57509e8a734626620ae243cb740466806ee3c64bbf12957d5ac0452a17aba6c0e10e2a82626a986df0c4e5cadebb9ce824f1af4fac85cf7d1b9b7cf37f5df06d77b901d0e2aaa772b49f838ec92a67d13b4d7908cf91f7e0a54ad031b2aa4a954180b652f0696350e4f286592e24cc83091b196f2d48397241e33acaf6f65be27af12f1a8af91fd1daf2c01bdfaaa'),
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('330a2105576f3c29717db75ffd19a37154d4d6beba8d796a26c4244793132f7e6cb180491000180122a001bd139a95021d34d9df74d99aa897981aa6718fd6b72d8567891afff92c6e3534ded0de80be7e7c58730a001f2acc1f1e6447f9ca0a99681f3f65d9a4072f3a1fb978740918d3db5c346170edb3bf8fec2b52362edf7138f93cb23a3f17b0f40bf9769e01273955b14c20b6212cbb1f665d1a7e5e770437a53b1727c13bcd639bf5beba71893b8de435244acddc42c3ba592b7debdacdc4dea12dc7e4e670753419be0455e0043f91'),
-     type: 1,
-     newEphemeralKey: hexToArrayBuffer('98bee5f861b528816888d45c2ca40125b111d2c03e483e57e6886c82dd758467'),
-     expectedSmsText: "E",
-   }],
-];
-
-// Now change the order and make 5 tests out of them:
-tests[tests.length] = {name: "Standard Signal Protocol Test Vectors as Bob", vectors: TwoPartyTestVectorsBob};
-
-var TwoPartyTestVectorsBobCopy = function() {
-  var orig = TwoPartyTestVectorsBob;
-  var v = [];
-  for (var i = 0; i < TwoPartyTestVectorsBob.length; i++) {
-    v[i] = [];
-    v[i][0] = orig[i][0];
-    v[i][1] = orig[i][1];
-  }
-  return v;
-}
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = TwoPartyTestVectorsBobCopy();
-  var orig = TwoPartyTestVectorsBob;
-
-  // Swap first and second received prekey messages
-  v[0][1] = { message: orig[1][1].message, type: orig[1][1].type, expectedSmsText: orig[1][1].expectedSmsText };
-  v[0][1].ourPreKey = orig[0][1].ourPreKey;
-  v[0][1].preKeyId = orig[0][1].preKeyId;
-  v[0][1].ourSignedPreKey = orig[0][1].ourSignedPreKey;
-  v[0][1].signedPreKeyId = orig[0][1].signedPreKeyId;
-  v[0][1].registrationId = orig[0][1].registrationId;
-  v[0][1].ourIdentityKey = orig[0][1].ourIdentityKey;
-  v[0][1].newEphemeralKey = orig[0][1].newEphemeralKey;
-
-  v[1][1] = { message: orig[0][1].message, type: orig[0][1].type, expectedSmsText: orig[0][1].expectedSmsText };
-  return {name: "Shuffled Signal Protocol Test Vectors as Bob I", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = TwoPartyTestVectorsBobCopy();
-  var orig = TwoPartyTestVectorsBob;
-
-  // Swap second received prekey msg with the first send
-  v[1] = orig[2];
-  v[2] = orig[1];
-
-  return {name: "Shuffled Signal Protocol Test Vectors as Bob II", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = TwoPartyTestVectorsBobCopy();
-  var orig = TwoPartyTestVectorsBob;
-
-  // Move second received prekey msg to the end (incl after the first received message in the second chain)
-  v[4] = orig[1];
-  v[1] = orig[2];
-  v[2] = orig[3];
-  v[3] = orig[4];
-
-  return {name: "Shuffled Signal Protocol Test Vectors as Bob III", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = TwoPartyTestVectorsBobCopy();
-  var orig = TwoPartyTestVectorsBob;
-
-  // Move first received prekey msg to the end (incl after the first received message in the second chain)
-  // ... by first swapping first and second received prekey msg
-  v[0][1] = { message: orig[1][1].message, type: orig[1][1].type, expectedSmsText: orig[1][1].expectedSmsText };
-  v[0][1].ourPreKey = orig[0][1].ourPreKey;
-  v[0][1].preKeyId = orig[0][1].preKeyId;
-  v[0][1].ourSignedPreKey = orig[0][1].ourSignedPreKey;
-  v[0][1].signedPreKeyId = orig[0][1].signedPreKeyId;
-  v[0][1].registrationId = orig[0][1].registrationId;
-  v[0][1].ourIdentityKey = orig[0][1].ourIdentityKey;
-  v[0][1].newEphemeralKey = orig[0][1].newEphemeralKey;
-
-  v[1][1] = { message: orig[0][1].message, type: orig[0][1].type, expectedSmsText: orig[0][1].expectedSmsText };
-
-  // ... then moving the (now-second) message to the end
-  v[4] = v[1];
-  v[1] = orig[2];
-  v[2] = orig[3];
-  v[3] = orig[4];
-
-  return {name: "Shuffled Signal Protocol Test Vectors as Bob IV", vectors: v};
-}();
-
-// Test vectors around an end-session
-var EndSessionTestVectorsBob = [
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1000180022a001a33a6395c75e2754ab5bf45d99c464770fb09d584009be373d965435d7abec5deaafbf63b52010c2d477422da8b4118c4d5055d89232eccbe82c744cfa5bf6ba3562ada59dd60fa111983ec03ea5f02715090071e386001feeac9d22705cb571629e8d2627ca0702ddfcc977b4e8231baea72ea2fb8eb6845fb38479960a44098e09bb2182737dbe4284e8149a36c6ac38dd438875eeeffe7b59bfd760c988385ad5dcf77f1cdad1288c243095b4ff04'),
-     type: 3,
-     ourPreKey: hexToArrayBuffer('f8ed827e88146a95061863870454eca91e01531762caeeba2e09d107a8987875'),
-     preKeyId: 3850073,
-     ourSignedPreKey: hexToArrayBuffer('887ebaa951738423384ca0f0d1ebc14dcf196413512b4840ddbe56cbea272a50'),
-     signedPreKeyId: 10476053,
-     ourIdentityKey: hexToArrayBuffer('d8cb8fcc1c186b7019126a0d07054f9b9a48ed69771c549937b22092dc18b875'),
-     newEphemeralKey: hexToArrayBuffer('c89599f0d89eefd371418e9112a41ce43b7eec9e4b7b920c945388d1371e624f'),
-     expectedSmsText: "A",
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1001180022a0016fb88b9ce5308db84894a6a76626806595c8936c72587d83d0e13a7dae9c97ae62c3796f3c6b00431dec75ec578bfc514fe741ff448562a4f4d6b00a1591c6cb9f4385a05889021d15446b8109ea4ea34e4a2070ae97ddac578d0acbeda55479040f5d9a8e1239802058a574ceae0e9fe7ad57249ba3eb866975508ea05a8f22ad2ca7fcbd4c2508eb4c0c665480cf19c3570dc79f2aedec70a7b0e58eca22484c6be90b44d57ba7288c243095b4ff04'),
-     type: 3,
-     expectedSmsText: "B",
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1002180022a001fc8de7bbe2622120ff8015e2a4af0806fed57092e4ee69f2ff6f93e296178b3ac7c414c2df08d77f8727ce935d5b27d9ad3ed46d61b28d666b651a8b8619cab903996c662b934a77355e70563f3066a9a808a6654a7d10bef7f1736091fad8b8a327d5791889cd8fabf6fd38838dd3350a1f62af7ab9e42ba97c89979831589c4506e6ed847e12a0e1e3004798539daab3065ce2355e4a3f8a93193c394cd42c19334efa98551c13288c243095b4ff04'),
-     type: 3,
-     expectTerminateSession: true,
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308dafeea011221051511a0c7e3fc2fd58e9fcd72649f2ca4f2efc894272e72b2e300b94b0d642e151a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105814aa31d8ea5d547173dbf78d064157d72af63bf0a3f0afc141f1b020e7a2f481000180022a001d6c78a30985f149cc34ccc3c86aee732d81ec087048e758990fe33e311b614ad225760b3863484089907385775940ad22718f9c124f3f1151a5e357a43ece6b183e2b682e46745ae28a966d93aa5335b5fe37a1b8bfa0bb6b77e168cd0c55bc13f770c322894b4c2efae0f9ddc8aeb0c840a3751e3a02b84d1285168182cbc6963255b85da87ed2fb1826b6e8587a6bb8e5fbb49ae8d2e590f2f4f5c4e46b7be7a5e1b36bdece77e288c243095b4ff04'),
-     type: 3,
-     ourPreKey: hexToArrayBuffer('d04cad1fd6c9a73b3a6ef89f45941d60f87cefc0efe1fca95befd49494a80673'),
-     preKeyId: 3850074,
-     ourSignedPreKey: hexToArrayBuffer('887ebaa951738423384ca0f0d1ebc14dcf196413512b4840ddbe56cbea272a50'),
-     signedPreKeyId: 10476053,
-     ourIdentityKey: hexToArrayBuffer('d8cb8fcc1c186b7019126a0d07054f9b9a48ed69771c549937b22092dc18b875'),
-     newEphemeralKey: hexToArrayBuffer('b0c7452e8d971a4c8e032e019f0584876cd2a0ef58029cea034baa625cb04d53'),
-     expectedSmsText: "C",
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('3308dafeea011221051511a0c7e3fc2fd58e9fcd72649f2ca4f2efc894272e72b2e300b94b0d642e151a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105814aa31d8ea5d547173dbf78d064157d72af63bf0a3f0afc141f1b020e7a2f481001180022a001daabfa33a904c2da99c91e81552a0e1951313a166f56a7533a57ad6f90938fb852ed0363a38ed21aa6252ed6f0d34264b8865eb0e9000b5c3bddbce025517f74de76e27116fa92d3f79fc65e87fa1503dc13bef6d3d9960e2f2f2cd0d1efe519d9b0409d30b1eeb32bbaf43c6c7abf8dcdd654f605ad838889ee426f244fa5ba054a10b3be5d2337de6ed92ae963a4386ddf462b8943f38bdbbf19aea1a05c0d8b71e50d8abd1804288c243095b4ff04'),
-		 type: 3,
-     expectedSmsText: "D",
-   }],
-  ["sendMessage",
-   {
-     smsText: "E",
-     expectedCiphertext: hexToArrayBuffer('330a2105d18962fecc5d861aaf89d73ce93e3957d483da4f8306ade163e9ea63f0f308261000180022a0010ca33f1cfa7e617b2e1d1627b7def6e30088547a122322cff2dcb985236509e0de63e865b54758ef373d403c2650d93b5107038efcb9a63d4c8fc4a517f7f897cb6389f2cdf3c0dbc5ee26ee9f4025dccfc3f4423fc9749e669ec13646bc2b6ff7eb9bdb206dff746aa52c269d61077bc7f45c026f77fd64f3ea82ebcd22e7fba0b33b46dda3d1e0a47deb6ef5f0cda82c991c7b372a10248a23254780d5518b1f7c74b6406be7e1'),
-   }],
-];
-
-// Now shuffle them around and make 6 tests
-tests[tests.length] = {name: "Signal Protocol End Session Test Vectors as Bob", vectors: EndSessionTestVectorsBob};
-
-var EndSessionTestVectorsBobCopy = function() {
-  var orig = EndSessionTestVectorsBob;
-  var v = [];
-  for (var i = 0; i < EndSessionTestVectorsBob.length; i++) {
-    v[i] = [];
-    v[i][0] = orig[i][0];
-    v[i][1] = orig[i][1];
-  }
-  return v;
-}
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Swap message 2 and 3, moving 2 after its session close
-  var tmp = v[2][1];
-  v[2][1] = v[1][1];
-  v[1][1] = tmp;
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob I", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Swap message 2 and 4, moving 2 after the new session
-  var tmp = v[3][1];
-  v[3][1] = v[1][1];
-  v[1][1] = tmp;
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob II", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Swap message 3 and 4, starting a new session before closing the last
-  var tmp = v[3][1];
-  v[3][1] = v[2][1];
-  v[2][1] = tmp;
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob III", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Swap message 3 and 4, starting a new session before closing the last
-  var tmp = v[3][1];
-  v[3][1] = v[2][1];
-  v[2][1] = tmp;
-
-  // Swap message 4 and 5, continuing the new session before closing the last
-  var tmp = v[4][1];
-  v[4][1] = v[3][1];
-  v[3][1] = tmp;
-
-  //...and also swap 5 and 6, sending before the last is closed
-  tmp = v[4][1];
-  v[4] = ["sendMessage", v[5][1]];
-  v[5] = ["receiveMessage", tmp];
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob IV", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Put the end session message before all the cooresponding messages
-  var tmp = v[0][1];
-  v[0][1] = { message: orig[2][1].message, type: orig[2][1].type, expectTerminateSession: orig[2][1].expectTerminateSession };
-  v[0][1].ourPreKey = orig[0][1].ourPreKey;
-  v[0][1].preKeyId = orig[0][1].preKeyId;
-  v[0][1].ourSignedPreKey = orig[0][1].ourSignedPreKey;
-  v[0][1].signedPreKeyId = orig[0][1].signedPreKeyId;
-  v[0][1].registrationId = orig[0][1].registrationId;
-  v[0][1].ourIdentityKey = orig[0][1].ourIdentityKey;
-  v[0][1].newEphemeralKey = orig[0][1].newEphemeralKey;
-  v[2][1] = { message: tmp.message, type: tmp.type, expectedSmsText: tmp.expectedSmsText };
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob V", vectors: v};
-}();
-
-tests[tests.length] = function() {
-  // Copy TwoPartyTestVectorsBob into v
-  var v = EndSessionTestVectorsBobCopy();
-  var orig = EndSessionTestVectorsBob;
-
-  // Put the end session message before all the cooresponding messages
-  var tmp = v[0][1];
-  v[0][1] = { message: orig[2][1].message, type: orig[2][1].type, expectTerminateSession: orig[2][1].expectTerminateSession };
-  v[0][1].ourPreKey = orig[0][1].ourPreKey;
-  v[0][1].preKeyId = orig[0][1].preKeyId;
-  v[0][1].ourSignedPreKey = orig[0][1].ourSignedPreKey;
-  v[0][1].signedPreKeyId = orig[0][1].signedPreKeyId;
-  v[0][1].registrationId = orig[0][1].registrationId;
-  v[0][1].ourIdentityKey = orig[0][1].ourIdentityKey;
-  v[0][1].newEphemeralKey = orig[0][1].newEphemeralKey;
-  v[2][1] = { message: tmp.message, type: tmp.type, expectedSmsText: tmp.expectedSmsText };
-
-  // ... and also open a new session before receiving the pending messages
-  tmp = v[3][1];
-  v[3][1] = v[2][1];
-  v[2][1] = tmp;
-
-  return {name: "Shuffled End Session Signal Protocol Test Vectors as Bob VI", vectors: v};
-}();
-
-// Nearly same as above except as Alice
-var EndSessionTestVectorsAlice = [
-  ["sendMessage",
-   {
-     smsText: "A",
-     ourBaseKey: hexToArrayBuffer('f09e0e39eb96b08d952c0c3f8283260e6de0575ea22e9b52a1c941eb28981b4a'),
-     ourEphemeralKey: hexToArrayBuffer('38480c56ce72a9aaae59ec082818c6b79d0eb2454d6e79427d5626e37ca7f057'),
-     ourIdentityKey: hexToArrayBuffer('88fd1a1d2d30f85a29504fd12e3012bc5e4bd0e87487103c5eaa02ea69993050'),
-     registrationId: 4620,
-     getKeys: {identityKey: hexToArrayBuffer('0503086f4fbae45fdfbcc3e9cc39e5851183b89ccc15e9216b9fda5ab5ce2adf35'),
-               devices: [{
-                 deviceId: 1,
-                 preKey: {keyId: 3850073, publicKey: hexToArrayBuffer('05a92ea682745b5059d9f7b01bdf1793c9aea3098c5ecdfd83eb253b6092245530')},
-                 signedPreKey: {keyId: 10476053, publicKey: hexToArrayBuffer('05a7f5ea2bc830f546f03debdf57a9738aa8c65c3c2857240b786458dbfc58fe76'), signature: hexToArrayBuffer('1a43ae36e17fefcb0d05b5618a79fda414ba5ae5ba3c3097a27b761a55810a2f6f1933e09a12e80f274cde4d39a837e3a1180b1c636c173f40190059ea09cc8e')},
-                 registrationId: 0xd00d
-               }]
-              },
-     expectedCiphertext: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1000180022a001a33a6395c75e2754ab5bf45d99c464770fb09d584009be373d965435d7abec5deaafbf63b52010c2d477422da8b4118c4d5055d89232eccbe82c744cfa5bf6ba3562ada59dd60fa111983ec03ea5f02715090071e386001feeac9d22705cb571629e8d2627ca0702ddfcc977b4e8231baea72ea2fb8eb6845fb38479960a44098e09bb2182737dbe4284e8149a36c6ac38dd438875eeeffe7b59bfd760c988385ad5dcf77f1cdad1288c243095b4ff04'),
-   }],
-  ["sendMessage",
-   {
-     smsText: "B",
-     expectedCiphertext: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1001180022a0016fb88b9ce5308db84894a6a76626806595c8936c72587d83d0e13a7dae9c97ae62c3796f3c6b00431dec75ec578bfc514fe741ff448562a4f4d6b00a1591c6cb9f4385a05889021d15446b8109ea4ea34e4a2070ae97ddac578d0acbeda55479040f5d9a8e1239802058a574ceae0e9fe7ad57249ba3eb866975508ea05a8f22ad2ca7fcbd4c2508eb4c0c665480cf19c3570dc79f2aedec70a7b0e58eca22484c6be90b44d57ba7288c243095b4ff04'),
-   }],
-  ["sendMessage",
-   {
-     endSession: true,
-     expectedCiphertext: hexToArrayBuffer('3308d9feea0112210594b31fff73bbbed5975e98779715700b5fc0293fbeb0901895274ca0ef07a8481a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105cb8e40652635bbd5859c8d592d80a93e2b72bc5691966ce58ecfc9478849976e1002180022a001fc8de7bbe2622120ff8015e2a4af0806fed57092e4ee69f2ff6f93e296178b3ac7c414c2df08d77f8727ce935d5b27d9ad3ed46d61b28d666b651a8b8619cab903996c662b934a77355e70563f3066a9a808a6654a7d10bef7f1736091fad8b8a327d5791889cd8fabf6fd38838dd3350a1f62af7ab9e42ba97c89979831589c4506e6ed847e12a0e1e3004798539daab3065ce2355e4a3f8a93193c394cd42c19334efa98551c13288c243095b4ff04'),
-   }],
-  ["sendMessage",
-   {
-     smsText: "C",
-     ourBaseKey: hexToArrayBuffer('20174d12685909b9bf1e83ce8edecab2858a2d50cb5b08d163fba2b463a1c768'),
-     ourEphemeralKey: hexToArrayBuffer('90c06b979a12a0055411ef6d4a7a80e8297aaec037b2fd4f8e8b7a0d3c0aa268'),
-     ourIdentityKey: hexToArrayBuffer('88fd1a1d2d30f85a29504fd12e3012bc5e4bd0e87487103c5eaa02ea69993050'),
-     registrationId: 4620,
-     getKeys: {identityKey: hexToArrayBuffer('0503086f4fbae45fdfbcc3e9cc39e5851183b89ccc15e9216b9fda5ab5ce2adf35'),
-               devices: [{
-                 deviceId: 1,
-                 preKey: {keyId: 3850074, publicKey: hexToArrayBuffer('05aa4602b00e4ac4979ff2a70e5c18097aa7d4d784febc00a3f889c6e80b8a9e09')},
-                 signedPreKey: {keyId: 10476053, publicKey: hexToArrayBuffer('05a7f5ea2bc830f546f03debdf57a9738aa8c65c3c2857240b786458dbfc58fe76'), signature: hexToArrayBuffer('1a43ae36e17fefcb0d05b5618a79fda414ba5ae5ba3c3097a27b761a55810a2f6f1933e09a12e80f274cde4d39a837e3a1180b1c636c173f40190059ea09cc8e')},
-                 registrationId: 0xd00d
-               }]
-              },
-     expectedCiphertext: hexToArrayBuffer('3308dafeea011221051511a0c7e3fc2fd58e9fcd72649f2ca4f2efc894272e72b2e300b94b0d642e151a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105814aa31d8ea5d547173dbf78d064157d72af63bf0a3f0afc141f1b020e7a2f481000180022a001d6c78a30985f149cc34ccc3c86aee732d81ec087048e758990fe33e311b614ad225760b3863484089907385775940ad22718f9c124f3f1151a5e357a43ece6b183e2b682e46745ae28a966d93aa5335b5fe37a1b8bfa0bb6b77e168cd0c55bc13f770c322894b4c2efae0f9ddc8aeb0c840a3751e3a02b84d1285168182cbc6963255b85da87ed2fb1826b6e8587a6bb8e5fbb49ae8d2e590f2f4f5c4e46b7be7a5e1b36bdece77e288c243095b4ff04'),
-   }],
-  ["sendMessage",
-   {
-     smsText: "D",
-     expectedCiphertext: hexToArrayBuffer('3308dafeea011221051511a0c7e3fc2fd58e9fcd72649f2ca4f2efc894272e72b2e300b94b0d642e151a21050b2fe13f294b58baeaba8d43521f9dd4df9fb235a8bd860693dbf60e8f48301022d301330a2105814aa31d8ea5d547173dbf78d064157d72af63bf0a3f0afc141f1b020e7a2f481001180022a001daabfa33a904c2da99c91e81552a0e1951313a166f56a7533a57ad6f90938fb852ed0363a38ed21aa6252ed6f0d34264b8865eb0e9000b5c3bddbce025517f74de76e27116fa92d3f79fc65e87fa1503dc13bef6d3d9960e2f2f2cd0d1efe519d9b0409d30b1eeb32bbaf43c6c7abf8dcdd654f605ad838889ee426f244fa5ba054a10b3be5d2337de6ed92ae963a4386ddf462b8943f38bdbbf19aea1a05c0d8b71e50d8abd1804288c243095b4ff04'),
-   }],
-  ["receiveMessage",
-   {
-     message: hexToArrayBuffer('330a2105d18962fecc5d861aaf89d73ce93e3957d483da4f8306ade163e9ea63f0f308261000180022a0010ca33f1cfa7e617b2e1d1627b7def6e30088547a122322cff2dcb985236509e0de63e865b54758ef373d403c2650d93b5107038efcb9a63d4c8fc4a517f7f897cb6389f2cdf3c0dbc5ee26ee9f4025dccfc3f4423fc9749e669ec13646bc2b6ff7eb9bdb206dff746aa52c269d61077bc7f45c026f77fd64f3ea82ebcd22e7fba0b33b46dda3d1e0a47deb6ef5f0cda82c991c7b372a10248a23254780d5518b1f7c74b6406be7e1'),
-     type: 1,
-     newEphemeralKey: hexToArrayBuffer('58ea057d9f33be4312a5581e223c277363e3b13c6db1920f63dab8fe29073775'),
-     expectedSmsText: "E",
-   }],
-];
-
-tests[tests.length] = {name: "Standard End Session Signal Protocol Test Vectors as Alice", vectors: EndSessionTestVectorsAlice};
-
-// Nearly same as above except as Alice
-/*var NoPreKeyEndSessionTestVectorsBob = [
- ["receiveMessage",
- {
- message: hexToArrayBuffer('3308ffffffff0f1221050a1fe3a769c05c50e8f09747969099d072f4c343b09ceae56543391349b5bc701a21053841429a37322af3f786be4df3dd8cea5403a79f258e254d4738970acbbe633422d301330a2105896760e61f619db748eb761225b49890aa4e5b286ff8d0575a06660158e40d4e1000180022a0010ced8428b53359fcf2f3dbb6f8be97e77309481df1013a86db4bd41aebc94f7c9d0077c81f53b96501caeece31bd8171f25255ebfe774a981f007849aa38da51904c57a1334a5a11d983205c4cb49e9dd7f308678e34734e6eb9a9297cf03abc8bdd1b1a07c9445474136656ac38cf5ddf41606cf511e20c002fd74bf4b1f8cec738c380b8d4dae0afa0ffc7e091ef5382787eb678b2d9c61dd6fa4ec146c8c30aade6666ee4325228ac3930a0b68d01'),
- type: 3,
- //ourPreKey: hexToArrayBuffer(''),
- //preKeyId: -1,
- ourSignedPreKey: hexToArrayBuffer('b1899b87fa3f6e84894cffded76843ef339f41474ec1ccf1a1c068046c18fb61'),
- signedPreKeyId: 2317088,
- ourIdentityKey: hexToArrayBuffer('18a3c6d4e4522e8f224c0b1efffdc1d91e6aced52f9fa18e14b888eec462394b'),
- newEphemeralKey: hexToArrayBuffer('d10237bd4906b68aa3c9105376747a30fb71ef8a2de9f4f5121f4ca458347355'),
- expectedSmsText: "A",
- }],
- ["receiveMessage",
- {
- message: hexToArrayBuffer('3308ffffffff0f1221050a1fe3a769c05c50e8f09747969099d072f4c343b09ceae56543391349b5bc701a21053841429a37322af3f786be4df3dd8cea5403a79f258e254d4738970acbbe633422d301330a2105896760e61f619db748eb761225b49890aa4e5b286ff8d0575a06660158e40d4e1001180022a0019ac9ba3b905c2a92bef7ece4d3c741cedcd05d15dd848be7fa5034db6de7835414f803b40301cf5b8c144b13582322d81dfbe3cf5db237595d16706b1cf2258bcf75b5ac69174341eb931c65a52130825c1f1f97641a7cc1c90c530e7cde0c09919ceb0ada3ea8d987295884f4d42561d793129035b8d298cab1fcba8f7a0bec75a1fe4a3440d59dd48c18f0372ab6952da75bf7f350d28132900e8c48210795aaf4296255be120428ac3930a0b68d01'),
- type: 3,
- expectedSmsText: "B",
- }],
- ["sendMessage",
- {
- smsText: "C",
- expectedCiphertext: hexToArrayBuffer('330a21051b4f7303e61b8e0f08dca7b31ce01151831d572e31270b3d291214a6e193b27b1000180022a0015b2f37c95192845d947febe6be26ded465f6d98ccef660216d17887dc32d32609ba7a91d3a332539faf483315952c79383fdd5b9768d4b42c665f5c117e2e1f82e10e07a61f63e8318ff687b3e3704336a9ed76565e088706704b680a6931f9adeacb7320c69c043b72db6b3d19646d67be2112be53e782e3b0f4523c6a019f4a693d1ced9d2379763e867ab2d7a03eb222948e1ce86a515d2da519336f7be53bc19af1c68326b3b'),
- }],
- ["sendMessage",
- {
- smsText: "D",
- expectedCiphertext: hexToArrayBuffer('330a21051b4f7303e61b8e0f08dca7b31ce01151831d572e31270b3d291214a6e193b27b1001180022a0016637465b06e81e2bf100cc7ff5dada7c837374b6a51123e6770d7c2ef032436255cdf866487da20de412efa5b99633aa76d833f8542d6d93d21cd2672904783079e4908a126708dfdfb087f48053bc16e3e28e8ac913d55fc25fb59e9bb3f6009a6938aaa86dbb911984d1425f4b4c959e71faeb85a0a017662d5d5a315b341966baf6dc8fa2e9736655d82249741fdcdb93a432346e218b153e5fbef5f064d9e6f6211cb9a6af36'),
- }],
- ["receiveMessage",
- {
- message: hexToArrayBuffer('330a21056076ed503123ff2662f1c3fce3f0d49084351d0a25fc08d67115a336e8d4be5c1000180122a0012cc6305372c347f141f7690ecc7cf2cc3a47c2c12d3a492e3be7fd6e2723e29e5e858378781d45eb795f32d47f8539987687db4b54e420b06980700b9c5bfe1780445a097c8a47f94080a4e8d88fe12a2c37e04bcb22e23685b7b955391f99ac2da52fbbb25d83269b6584c68de3b61f7f37ffda8c7350a15e798ca59891dd8f62f59afe3544c4a99118edddda322f4aa516536a64dce05e091b125fb06a9c37501e344b993f2a8b'),
- type: 1,
- expectTerminateSession: true,
- newEphemeralKey: hexToArrayBuffer('3131dd7adb8c2eb01e10d6441ede57e499b929354740cea99f6e79fea0eadf58'),
- }],
- ["receiveMessage",
- {
- message: hexToArrayBuffer('330a21056076ed503123ff2662f1c3fce3f0d49084351d0a25fc08d67115a336e8d4be5c1001180122a001f0898aaaaa4f7928793c4c14b16256e5b797e99a55e12b69242ed4086fb5c1f71982b683f2324305ebccb2eaae146ee783b23f8cebb0aa970e209e554b4ae6140ef30f2f0d83b73ca3f74075194574a9c260ad0e1d08df218aa334ead582efa9a8e705ff17a8e22994a4ac91359cadf9b9cf6853eae12a4bd9c5e5bcad4b8ca991005f0699a5960d09244fa2f01e9f0fb50e85f7318556b314358bfd0fbbc8055dc1090c7d214d83'),
- type: 1,
- expectException: true,
- }],
- ["receiveMessage",
- {
- message: hexToArrayBuffer('3308ffffffff0f122105018086d77ab095075239bc2e54a24355114985c8c897b1a56d253d3449ba416b1a21053841429a37322af3f786be4df3dd8cea5403a79f258e254d4738970acbbe633422d301330a2105578d8b0420b0b68fe817772d4dd4f5eea2f786da22f33a109b57adb7ad084c6f1000180022a001cb7303e83ac80b6cd251a93107061aa96ad7bd9b2983a597ba500b0d3402e93af6bcc9304f1ca3a37e9e5a26743ec50dea620c474cec8101a5439cb357c1a4479bb50b33061405fbfddae119edead07ff4fd292f5d6666fc94b8d36cd96ef6fd58fc70d478b182f3cf15a8f1be6a51e560671f901e09fa8b2376462a4cc953751ddc027e15cd0a92f86bb40d3b199b2dab1e0c2e208b104a2594220ff6129f0650ca8aff90c6e06228ac3930a0b68d01'),
- type: 3,
- //ourPreKey: hexToArrayBuffer(''),
- //preKeyId: -1,
- ourSignedPreKey: hexToArrayBuffer('b1899b87fa3f6e84894cffded76843ef339f41474ec1ccf1a1c068046c18fb61'),
- signedPreKeyId: 2317088,
- ourIdentityKey: hexToArrayBuffer('18a3c6d4e4522e8f224c0b1efffdc1d91e6aced52f9fa18e14b888eec462394b'),
- newEphemeralKey: hexToArrayBuffer('c9411ca8636f8462308135ae6aff6ec30338ae2c87808b6ee35ef21530971070'),
- expectedSmsText: "F",
- }],
- ];
-
- tests[tests.length] = {name: "No-PreKey fake end-session test as Bob", vectors: NoPreKeyEndSessionTestVectorsBob};
- */
-
-//TODO: GROUPS
-//TODO: Sender changes identity key?
-
-module.exports = tests
-
-},{"./test_helpers.js":213}]},{},[211]);
+},{"./IntegrationTest.js":194}]},{},[196]);

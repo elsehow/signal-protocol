@@ -1,5 +1,7 @@
 var signal = require('..');
+var SignalStore = require('./InMemorySignalProtocolStore.js')
 var assert = require('chai').assert;
+var util = require('../src/helpers.js')
 
 describe('Integration test', function() {
   it('imports all methods', function(done) {
@@ -82,29 +84,49 @@ describe('Integration test', function() {
     });
   }
 
-  it('can play out session building stuff + encrypt', function (done) {
-    var name = 'name';
-    var deviceId = 42;
-    var MySignalProtocolStore = require('./InMemorySignalProtocolStore.js');
-    var store = new MySignalProtocolStore();
-    var address = new signal.SignalProtocolAddress(name, deviceId);
-    var sessionBuilder = new signal.SessionBuilder(store, address);
+    // returns a promise of
+    // [ aliceSessionCipher, bobSessionCipher ]
+    function bobAliceSessionCiphers () {
+        var ALICE_ADDRESS = new signal.SignalProtocolAddress("+14151111111", 1);
+        var BOB_ADDRESS   = new signal.SignalProtocolAddress("+14152222222", 1);
 
-    generateIdentity(store)
-      .then(function () {
-        return generatePreKeyBundle(store, 1337, 1);
-      }).then(function (bundle) {
-        return sessionBuilder.processPreKey(bundle);
-      }).then(function () {
-        var plaintext = "Hello world";
-        var sessionCipher = new signal.SessionCipher(store, address);
-        sessionCipher.encrypt(plaintext).then(function(ciphertext) {
-          assert.isDefined(ciphertext.type);
-          assert.isDefined(ciphertext.body);
-          done();
-        });
-      }).catch(function (err) {
-        assert.isUndefined(err);
-      });
+        var aliceStore = new SignalStore();
+        var bobStore = new SignalStore();
+
+        var bobPreKeyId = 1337;
+        var bobSignedKeyId = 1;
+
+        return Promise.all([
+            generateIdentity(aliceStore),
+            generateIdentity(bobStore),
+        ]).then(function() {
+            return generatePreKeyBundle(bobStore, bobPreKeyId, bobSignedKeyId);
+        }).then(function(preKeyBundle) {
+            var builder = new signal.SessionBuilder(aliceStore, BOB_ADDRESS);
+            return builder.processPreKey(preKeyBundle);
+        }).then(function () {
+            var aliceSessionCipher = new signal.SessionCipher(aliceStore, BOB_ADDRESS);
+            var bobSessionCipher = new signal.SessionCipher(bobStore, ALICE_ADDRESS);
+            return [ aliceSessionCipher, bobSessionCipher ];
+        })
+    }
+
+  it('can encrypt + decrypt a long message', function (done) {
+      bobAliceSessionCiphers()
+          .then(function ([ aliceSessionCipher, bobSessionCipher ]) {
+        // var plaintext = "Hello world";
+              var plaintext = require('./long-plaintext.json').plaintext;
+              var b = new Buffer(plaintext, 'utf-8');
+              aliceSessionCipher.encrypt(b)
+                  .then(c => bobSessionCipher.decryptPreKeyWhisperMessage(c.body, 'binary'))
+                  .then(decodedPlaintext => {
+                      console.log('expected', b)
+                      console.log('decoded', new Buffer(decodedPlaintext))
+                      assert.equal(plaintext,new Buffer(decodedPlaintext));
+                      done();
+                  }).catch(function (err) {
+                      assert.isUndefined(err);
+                  });
+          })
   });
-});
+})
