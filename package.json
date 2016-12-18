@@ -12,7 +12,7 @@
   "dependencies": {
     "bytebuffer": "^3.5.5",
     "long": "^3.1.0",
-    "node-webcrypto-ossl": "^1.0.14",
+    "node-webcrypto-ossl": "^1.0.15",
     "protobufjs": "5.0.1",
     "tiny-worker": "^1.1.7",
     "webworkify": "^1.4.0"

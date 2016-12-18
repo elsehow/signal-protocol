@@ -120,8 +120,6 @@ describe('Integration test', function() {
               aliceSessionCipher.encrypt(b)
                   .then(c => bobSessionCipher.decryptPreKeyWhisperMessage(c.body, 'binary'))
                   .then(decodedPlaintext => {
-                      console.log('expected', b, 'length', b.length)
-                      console.log('decoded', new Buffer(decodedPlaintext))
                       assert.equal(plaintext,new Buffer(decodedPlaintext));
                       done();
                   }).catch(function (err) {
