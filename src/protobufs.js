@@ -8,6 +8,7 @@
 module.exports = function protobuf() {
   'use strict';
   var dcodeIO = require('../build/dcodeIO.js');
+  // var protobufjs = require('protobufjs')
 
   function loadProtoBufs(filename) {
     return dcodeIO.loadProto(Internal.protoText['protos/' + filename]).build('textsecure');

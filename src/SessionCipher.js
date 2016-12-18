@@ -212,7 +212,7 @@ SessionCipher.prototype = {
         return Promise.reject(new Error("No session found to decrypt message from " + this.remoteAddress.toString()));
     }
     if (session.indexInfo.closed != -1) {
-        console.log('decrypting message for closed session');
+        // console.log('decrypting message for closed session');
     }
 
     return this.maybeStepRatchet(session, remoteEphemeralKey, message.previousCounter).then(function() {
@@ -251,7 +251,7 @@ SessionCipher.prototype = {
   },
   fillMessageKeys: function(chain, counter) {
       if (Object.keys(chain.messageKeys).length >= 1000) {
-          console.log("Too many message keys for chain");
+          // console.log("Too many message keys for chain");
           return Promise.resolve(); // Stalker, much?
       }
 
@@ -281,7 +281,7 @@ SessionCipher.prototype = {
           return Promise.resolve();
       }
 
-      console.log('New remote ephemeral key');
+      // console.log('New remote ephemeral key');
       var ratchet = session.currentRatchet;
 
       return Promise.resolve().then(function() {

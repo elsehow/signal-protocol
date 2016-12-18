@@ -34429,6 +34429,7 @@ Internal.protoText = function() {
 module.exports = function protobuf() {
   'use strict';
   var dcodeIO = require('../build/dcodeIO.js');
+  // var protobufjs = require('protobufjs')
 
   function loadProtoBufs(filename) {
     return dcodeIO.loadProto(Internal.protoText['protos/' + filename]).build('textsecure');
@@ -59599,7 +59600,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign"
+      "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -59634,7 +59635,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/home/ffff/Projects/signal-protocol/node_modules/browserify-sign",
+  "_where": "/Users/ffff/Projects/the-signal-protocol/node_modules/browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -67859,7 +67860,7 @@ SessionBuilder.prototype = {
     }.bind(this)).then(function() {
         session = record.getSessionByBaseKey(message.baseKey);
         if (session) {
-          console.log("Duplicate PreKeyMessage for session");
+          // console.log("Duplicate PreKeyMessage for session");
           return;
         }
 
@@ -67880,7 +67881,7 @@ SessionBuilder.prototype = {
             record.archiveCurrentState();
         }
         if (message.preKeyId && !preKeyPair) {
-            console.log('Invalid prekey id', message.preKeyId);
+            // console.log('Invalid prekey id', message.preKeyId);
         }
         return this.initSession(false, preKeyPair, signedPreKeyPair,
             message.identityKey.toArrayBuffer(),
@@ -68224,7 +68225,7 @@ SessionCipher.prototype = {
         return Promise.reject(new Error("No session found to decrypt message from " + this.remoteAddress.toString()));
     }
     if (session.indexInfo.closed != -1) {
-        console.log('decrypting message for closed session');
+        // console.log('decrypting message for closed session');
     }
 
     return this.maybeStepRatchet(session, remoteEphemeralKey, message.previousCounter).then(function() {
@@ -68263,7 +68264,7 @@ SessionCipher.prototype = {
   },
   fillMessageKeys: function(chain, counter) {
       if (Object.keys(chain.messageKeys).length >= 1000) {
-          console.log("Too many message keys for chain");
+          // console.log("Too many message keys for chain");
           return Promise.resolve(); // Stalker, much?
       }
 
@@ -68293,7 +68294,7 @@ SessionCipher.prototype = {
           return Promise.resolve();
       }
 
-      console.log('New remote ephemeral key');
+      // console.log('New remote ephemeral key');
       var ratchet = session.currentRatchet;
 
       return Promise.resolve().then(function() {
@@ -68521,7 +68522,7 @@ var SessionRecord = function() {
         getSessionByBaseKey: function(baseKey) {
             var session = this._sessions[util.toString(baseKey)];
             if (session && session.indexInfo.baseKeyType === BaseKeyType.OURS) {
-                console.log("Tried to lookup a session using our basekey");
+                // console.log("Tried to lookup a session using our basekey");
                 return undefined;
             }
             return session;
@@ -68637,7 +68638,7 @@ var SessionRecord = function() {
             if (session.indexInfo.closed > -1) {
                 return;
             }
-            console.log('closing session', session.indexInfo.baseKey);
+            // console.log('closing session', session.indexInfo.baseKey);
 
             // After this has run, we can still receive messages on ratchet chains which
             // were already open (unless we know we dont need them),
@@ -68669,7 +68670,7 @@ var SessionRecord = function() {
                         index = i;
                     }
                 }
-                console.log("Deleting chain closed at", oldest.added);
+                // console.log("Deleting chain closed at", oldest.added);
                 delete session[util.toString(oldest.ephemeralKey)];
                 session.oldRatchetList.splice(index, 1);
             }
@@ -68687,7 +68688,7 @@ var SessionRecord = function() {
                         oldestSession = session;
                     }
                 }
-                console.log("Deleting session closed at", oldestSession.indexInfo.closed);
+                // console.log("Deleting session closed at", oldestSession.indexInfo.closed);
                 delete sessions[util.toString(oldestBaseKey)];
             }
         },
@@ -68771,8 +68772,14 @@ myCrypto.crypto = {
     return array.buffer;
   },
   encrypt: function(key, data, iv) {
-    return crypto.subtle.importKey('raw', key, {name: 'AES-CBC'}, false, ['encrypt']).then(function(key) {
-      return crypto.subtle.encrypt({name: 'AES-CBC', iv: new Uint8Array(iv)}, key, data);
+      return crypto.subtle.importKey('raw', key, {
+          name: 'AES-CBC'
+      }, false, ['encrypt'])
+          .then(function(key) {
+              return crypto.subtle.encrypt({
+                  name: 'AES-CBC',
+                  iv: new Uint8Array(iv)
+              }, key, data);
     });
   },
   decrypt: function(key, data, iv) {
@@ -68852,8 +68859,8 @@ myCrypto.verifyMAC = function(data, key, mac, length) {
       result = result | (a[i] ^ b[i]);
     }
     if (result !== 0) {
-      console.log('Our MAC  ', dcodeIO.ByteBuffer.wrap(calculated_mac).toHex());
-      console.log('Their MAC', dcodeIO.ByteBuffer.wrap(mac).toHex());
+      // console.log('Our MAC  ', dcodeIO.ByteBuffer.wrap(calculated_mac).toHex());
+      // console.log('Their MAC', dcodeIO.ByteBuffer.wrap(mac).toHex());
       throw new Error("Bad MAC");
     }
   });
@@ -69515,15 +69522,14 @@ describe('Integration test', function() {
 
   it('can encrypt + decrypt a long message', function (done) {
       bobAliceSessionCiphers()
-          .then(function ([ aliceSessionCipher, bobSessionCipher ]) {
-        // var plaintext = "Hello world";
+          .then(function (ciphers) { 
+              var aliceSessionCipher = ciphers[0]
+              var bobSessionCipher = ciphers[1]
               var plaintext = require('./long-plaintext.json').plaintext;
               var b = new Buffer(plaintext, 'utf-8');
               aliceSessionCipher.encrypt(b)
                   .then(c => bobSessionCipher.decryptPreKeyWhisperMessage(c.body, 'binary'))
                   .then(decodedPlaintext => {
-                      console.log('expected', b, 'length', b.length)
-                      console.log('decoded', new Buffer(decodedPlaintext))
                       assert.equal(plaintext,new Buffer(decodedPlaintext));
                       done();
                   }).catch(function (err) {

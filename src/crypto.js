@@ -30,7 +30,6 @@ myCrypto.crypto = {
     return array.buffer;
   },
   encrypt: function(key, data, iv) {
-      // console.log('input data is', data)
       return crypto.subtle.importKey('raw', key, {
           name: 'AES-CBC'
       }, false, ['encrypt'])
@@ -118,8 +117,8 @@ myCrypto.verifyMAC = function(data, key, mac, length) {
       result = result | (a[i] ^ b[i]);
     }
     if (result !== 0) {
-      console.log('Our MAC  ', dcodeIO.ByteBuffer.wrap(calculated_mac).toHex());
-      console.log('Their MAC', dcodeIO.ByteBuffer.wrap(mac).toHex());
+      // console.log('Our MAC  ', dcodeIO.ByteBuffer.wrap(calculated_mac).toHex());
+      // console.log('Their MAC', dcodeIO.ByteBuffer.wrap(mac).toHex());
       throw new Error("Bad MAC");
     }
   });

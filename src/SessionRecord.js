@@ -93,7 +93,7 @@ var SessionRecord = function() {
         getSessionByBaseKey: function(baseKey) {
             var session = this._sessions[util.toString(baseKey)];
             if (session && session.indexInfo.baseKeyType === BaseKeyType.OURS) {
-                console.log("Tried to lookup a session using our basekey");
+                // console.log("Tried to lookup a session using our basekey");
                 return undefined;
             }
             return session;
@@ -209,7 +209,7 @@ var SessionRecord = function() {
             if (session.indexInfo.closed > -1) {
                 return;
             }
-            console.log('closing session', session.indexInfo.baseKey);
+            // console.log('closing session', session.indexInfo.baseKey);
 
             // After this has run, we can still receive messages on ratchet chains which
             // were already open (unless we know we dont need them),
@@ -241,7 +241,7 @@ var SessionRecord = function() {
                         index = i;
                     }
                 }
-                console.log("Deleting chain closed at", oldest.added);
+                // console.log("Deleting chain closed at", oldest.added);
                 delete session[util.toString(oldest.ephemeralKey)];
                 session.oldRatchetList.splice(index, 1);
             }
@@ -259,7 +259,7 @@ var SessionRecord = function() {
                         oldestSession = session;
                     }
                 }
-                console.log("Deleting session closed at", oldestSession.indexInfo.closed);
+                // console.log("Deleting session closed at", oldestSession.indexInfo.closed);
                 delete sessions[util.toString(oldestBaseKey)];
             }
         },

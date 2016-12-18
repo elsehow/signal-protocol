@@ -79,7 +79,7 @@ SessionBuilder.prototype = {
     }.bind(this)).then(function() {
         session = record.getSessionByBaseKey(message.baseKey);
         if (session) {
-          console.log("Duplicate PreKeyMessage for session");
+          // console.log("Duplicate PreKeyMessage for session");
           return;
         }
 
@@ -100,7 +100,7 @@ SessionBuilder.prototype = {
             record.archiveCurrentState();
         }
         if (message.preKeyId && !preKeyPair) {
-            console.log('Invalid prekey id', message.preKeyId);
+            // console.log('Invalid prekey id', message.preKeyId);
         }
         return this.initSession(false, preKeyPair, signedPreKeyPair,
             message.identityKey.toArrayBuffer(),
