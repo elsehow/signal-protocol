@@ -4,14 +4,15 @@
 'use strict';
 
 
-var dcodeIO = require('../build/dcodeIO.js');
+// var dcodeIO = require('../build/dcodeIO.js');
+var ByteBuffer = require('bytebuffer').ByteBufferAB;
 var StaticArrayBufferProto = new ArrayBuffer().__proto__;
 
 function toString (thing) {
   if (typeof thing == 'string') {
     return thing;
   }
-  return new dcodeIO.ByteBuffer.wrap(thing).toString('binary');
+  return new ByteBuffer.wrap(thing).toString('binary');
 }
 
 function toArrayBuffer (thing) {
@@ -29,7 +30,7 @@ function toArrayBuffer (thing) {
   } else {
     throw new Error("Tried to convert a non-string of type " + typeof thing + " to an array buffer");
   }
-  return new dcodeIO.ByteBuffer.wrap(thing, 'binary').toArrayBuffer();
+  return new ByteBuffer.wrap(thing, 'binary').toArrayBuffer();
 }
 
 function isEqual (a, b) {

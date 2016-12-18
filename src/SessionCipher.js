@@ -6,7 +6,8 @@ var SessionBuilder = require('./SessionBuilder.js');
 var Crypto = require('./crypto.js');
 var ChainType = require('./ChainType.js');
 var protobuf = require('../build/protobufs_concat.js');
-var dcodeIO = require('../build/dcodeIO.js');
+// var dcodeIO = require('../build/dcodeIO.js');
+var ByteBuffer = require('bytebuffer').ByteBufferAB;
 
 function SessionCipher(storage, remoteAddress) {
   this.remoteAddress = remoteAddress;
@@ -23,7 +24,7 @@ SessionCipher.prototype = {
       });
   },
   encrypt: function(buffer, encoding) {
-    buffer = dcodeIO.ByteBuffer.wrap(buffer, encoding).toArrayBuffer();
+    buffer = ByteBuffer.wrap(buffer, encoding).toArrayBuffer();
     return SessionLock.queueJobForNumber(this.remoteAddress.toString(), function() {
       if (!(buffer instanceof ArrayBuffer)) {
           throw new Error("Expected buffer to be an ArrayBuffer");
@@ -137,7 +138,7 @@ SessionCipher.prototype = {
     }.bind(this));
   },
   decryptWhisperMessage: function(buffer, encoding) {
-      buffer = dcodeIO.ByteBuffer.wrap(buffer, encoding).toArrayBuffer();
+      buffer = ByteBuffer.wrap(buffer, encoding).toArrayBuffer();
       return SessionLock.queueJobForNumber(this.remoteAddress.toString(), function() {
         var address = this.remoteAddress.toString();
         return this.getRecord(address).then(function(record) {
@@ -157,7 +158,7 @@ SessionCipher.prototype = {
       }.bind(this));
   },
   decryptPreKeyWhisperMessage: function(buffer, encoding) {
-      buffer = dcodeIO.ByteBuffer.wrap(buffer, encoding);
+      buffer = ByteBuffer.wrap(buffer, encoding);
       var version = buffer.readUint8();
       if ((version & 0xF) > 3 || (version >> 4) < 3) {  // min version > 3 or max version < 3
           throw new Error("Incompatible version number on PreKeyWhisperMessage");

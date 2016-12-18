@@ -1,10 +1,11 @@
 var VERSION = 0;
 
 var Crypto = require('./crypto.js');
-var dcodeIO = require('../build/dcodeIO.js');
+// var dcodeIO = require('../build/dcodeIO.js');
+var ByteBuffer = require('bytebuffer').ByteBufferAB;
 
 function iterateHash(data, key, count) {
-  data = dcodeIO.ByteBuffer.concat([data, key]).toArrayBuffer();
+  data = ByteBuffer.concat([data, key]).toArrayBuffer();
   return Crypto.crypto.hash(data).then(function(result) {
     if (--count === 0) {
       return result;
@@ -32,7 +33,7 @@ function getEncodedChunk(hash, offset) {
 }
 
 function getDisplayStringFor(identifier, key, iterations) {
-  var bytes = dcodeIO.ByteBuffer.concat([
+  var bytes = ByteBuffer.concat([
     shortToArrayBuffer(VERSION), key, identifier
   ]).toArrayBuffer();
   return iterateHash(bytes, key, iterations).then(function(output) {

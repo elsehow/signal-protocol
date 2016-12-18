@@ -3,7 +3,8 @@
  */
 
 var util = require('./helpers.js');
-var dcodeIO = require('../build/dcodeIO.js');
+// var dcodeIO = require('../build/dcodeIO.js');
+var ByteBuffer = require('bytebuffer').ByteBufferAB
 
 var BaseKeyType = require('./BaseKeyType.js');
 
@@ -13,7 +14,7 @@ var SessionRecord = function() {
     'use strict';
     var MESSAGE_LOST_THRESHOLD_MS = 1000*60*60*24*7;
 
-    var StaticByteBufferProto = new dcodeIO.ByteBuffer().__proto__;
+    var StaticByteBufferProto = new ByteBuffer().__proto__;
     var StaticArrayBufferProto = new ArrayBuffer().__proto__;
     var StaticUint8ArrayProto = new Uint8Array().__proto__;
 
