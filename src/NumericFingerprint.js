@@ -2,7 +2,7 @@ var VERSION = 0;
 
 var Crypto = require('./crypto.js');
 // var dcodeIO = require('../build/dcodeIO.js');
-var ByteBuffer = require('bytebuffer').ByteBufferAB;
+var ByteBuffer = require('bytebuffer')//.ByteBufferAB;
 
 function iterateHash(data, key, count) {
   data = ByteBuffer.concat([data, key]).toArrayBuffer();

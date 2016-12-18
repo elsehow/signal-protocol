@@ -4,7 +4,7 @@
 
 var util = require('./helpers.js');
 // var dcodeIO = require('../build/dcodeIO.js');
-var ByteBuffer = require('bytebuffer').ByteBufferAB
+var ByteBuffer = require('bytebuffer')// sf.ByteBufferAB
 
 var BaseKeyType = require('./BaseKeyType.js');
 

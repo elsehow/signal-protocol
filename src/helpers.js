@@ -5,7 +5,7 @@
 
 
 // var dcodeIO = require('../build/dcodeIO.js');
-var ByteBuffer = require('bytebuffer').ByteBufferAB;
+var ByteBuffer = require('bytebuffer')//.ByteBufferAB;
 var StaticArrayBufferProto = new ArrayBuffer().__proto__;
 
 function toString (thing) {
