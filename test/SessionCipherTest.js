@@ -142,10 +142,10 @@ describe('SessionCipher', function() {
         return setupReceiveStep(store, data, privKeyQueue).then(function() {
             var sessionCipher = new SessionCipher(store, address);
 
-            if (data.type == textsecure.protobuf.IncomingPushMessageSignal.Type.CIPHERTEXT) {
+          if (data.type == textsecure.protobuf.IncomingPushMessageSignal.get('Type').values.CIPHERTEXT) {
                 return sessionCipher.decryptWhisperMessage(data.message).then(unpad);
             }
-            else if (data.type == textsecure.protobuf.IncomingPushMessageSignal.Type.PREKEY_BUNDLE) {
+          else if (data.type == textsecure.protobuf.IncomingPushMessageSignal.get('Type').values.PREKEY_BUNDLE) {
                 return sessionCipher.decryptPreKeyWhisperMessage(data.message).then(unpad);
             } else {
                 throw new Error("Unknown data type in test vector");
@@ -154,7 +154,7 @@ describe('SessionCipher', function() {
         }).then(function checkResult(plaintext) {
             var content = textsecure.protobuf.PushMessageContent.decode(plaintext);
             if (data.expectTerminateSession) {
-                if (content.flags == textsecure.protobuf.PushMessageContent.Flags.END_SESSION) {
+              if (content.flags == textsecure.protobuf.PushMessageContent.get('Flags').values.END_SESSION) {
                     return true;
                 } else {
                     return false;
@@ -205,14 +205,15 @@ describe('SessionCipher', function() {
             }
         }).then(function() {
 
-            var proto = new textsecure.protobuf.PushMessageContent();
+            var proto = {};
             if (data.endSession) {
-                proto.flags = textsecure.protobuf.PushMessageContent.Flags.END_SESSION;
+              proto.flags = textsecure.protobuf.PushMessageContent.get('Flags').values.END_SESSION;
             } else {
-                proto.body = data.smsText;
+              proto.body = data.smsText;
             }
 
             var sessionCipher = new SessionCipher(store, address);
+            proto = textsecure.protobuf.PushMessageContent.encode(proto);
             return sessionCipher.encrypt(pad(proto.toArrayBuffer())).then(function(msg) {
                 //XXX: This should be all we do: isEqual(data.expectedCiphertext, encryptedMsg, false);
                 if (msg.type == 1) {

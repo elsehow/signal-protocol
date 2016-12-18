@@ -58,8 +58,8 @@ var pushMessages     = protobufjs.parse('package textsecure;\n' +
 
 module.exports = {
     protobuf: {
-        IncomingPushMessageSignal : pushMessages.IncomingPushMessageSignal,
-        PushMessageContent        : pushMessages.PushMessageContent,
+      IncomingPushMessageSignal : pushMessages.root.get('textsecure').get('IncomingPushMessageSignal'),
+      PushMessageContent        : pushMessages.root.get('textsecure').get('PushMessageContent')
     }
 
 };
