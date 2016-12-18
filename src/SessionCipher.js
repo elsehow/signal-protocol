@@ -74,7 +74,7 @@ SessionCipher.prototype = {
           ).then(function(ciphertext) {
               msg.ciphertext = ciphertext;
               msg = protobuf.WhisperMessage.encode(msg);
-              var encodedMsg = msg.toArrayBuffer();
+              var encodedMsg = msg//.toArrayBuffer();
 
               var macInput = new Uint8Array(encodedMsg.byteLength + 33*2 + 1);
               macInput.set(new Uint8Array(util.toArrayBuffer(ourIdentityKey.pubKey)));
@@ -208,7 +208,7 @@ SessionCipher.prototype = {
     var mac = messageBytes.slice(messageBytes.byteLength - 8, messageBytes.byteLength);
 
     var message = protobuf.WhisperMessage.decode(messageProto);
-    var remoteEphemeralKey = message.ephemeralKey.toArrayBuffer();
+    var remoteEphemeralKey = message.ephemeralKey//.toArrayBuffer();
 
     if (session === undefined) {
         return Promise.reject(new Error("No session found to decrypt message from " + this.remoteAddress.toString()));
@@ -244,7 +244,7 @@ SessionCipher.prototype = {
 
             return Crypto.verifyMAC(macInput.buffer, keys[1], mac, 8);
         }.bind(this)).then(function() {
-            return Crypto.crypto.decrypt(keys[0], message.ciphertext.toArrayBuffer(), keys[2].slice(0, 16));
+          return Crypto.crypto.decrypt(keys[0], message.ciphertext.toArrayBuffer(), keys[2].slice(0, 16));
         });
     }.bind(this)).then(function(plaintext) {
         delete session.pendingPreKey;

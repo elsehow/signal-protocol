@@ -214,7 +214,7 @@ describe('SessionCipher', function() {
 
             var sessionCipher = new SessionCipher(store, address);
             proto = textsecure.protobuf.PushMessageContent.encode(proto);
-            return sessionCipher.encrypt(pad(proto.toArrayBuffer())).then(function(msg) {
+            return sessionCipher.encrypt(pad(proto)).then(function(msg) {
                 //XXX: This should be all we do: isEqual(data.expectedCiphertext, encryptedMsg, false);
                 if (msg.type == 1) {
                     return util.isEqual(data.expectedCiphertext, msg.body);
