@@ -24,14 +24,6 @@ module.exports = function(grunt) {
       }
     },
     concat: {
-      components: {
-        src: [
-          'node_modules/long/dist/long.js',
-          'node_modules/bytebuffer/dist/ByteBufferAB.js',
-          'node_modules/protobufjs/dist/protobuf.js'
-        ],
-        dest: 'build/dcodeIO.js'
-      },
       curve25519: {
         src: [
           'build/curve25519_compiled.js',

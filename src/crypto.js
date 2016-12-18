@@ -14,7 +14,7 @@ try {
 
 var Curve = require('./Curve.js');
 var util = require('./helpers.js');
-var dcodeIO = require('../build/dcodeIO.js');
+// var dcodeIO = require('../build/dcodeIO.js');
 
 if (!crypto || !crypto.subtle || typeof crypto.getRandomValues !== 'function') {
   throw new Error('WebCrypto not found, and node-webcrypto-ossl not imported!');
