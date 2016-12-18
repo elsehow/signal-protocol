@@ -42,19 +42,17 @@ Internal.protoText = function() {
 module.exports = (function protobuf() {
   'use strict';
   // var dcodeIO = require('../build/dcodeIO.js');
-  var protobufjs = require('protobufjs')
+  var protobufjs = require('protobufjs');
 
   function loadProtoBufs(filename) {
-    return protobufjs.parse(Internal.protoText['protos/' + filename])//.build('textsecure');
+    let protoText = Internal.protoText['protos/' + filename];
+    return protobufjs.parse(protoText);//.build('textsecure');
   }
 
   var protocolMessages = loadProtoBufs('WhisperTextProtocol.proto');
-  console.log(protocolMessages.root.get('WhisperMesssage'))
 
   return {
-    WhisperMessage            : protocolMessages.root.nested.textsecure.nested.WhisperMessage,
-    PreKeyWhisperMessage      : protocolMessages.root.nested.textsecure.nested.PreKeyWhisperMessage
-    // WhisperMessage            : protocolMessages.WhisperMessage,
-    // PreKeyWhisperMessage      : protocolMessages.PreKeyWhisperMessage
+    WhisperMessage            : protocolMessages.root.get('textsecure').get('WhisperMessage'),
+    PreKeyWhisperMessage      : protocolMessages.root.get('textsecure').get('PreKeyWhisperMessage')
   };
 })();

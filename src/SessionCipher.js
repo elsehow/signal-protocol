@@ -33,7 +33,7 @@ SessionCipher.prototype = {
       var address = this.remoteAddress.toString();
       var ourIdentityKey, myRegistrationId, record, session, chain;
 
-      var msg = new protobuf.WhisperMessage();
+      var msg = {} 
 
       return Promise.all([
           this.storage.getIdentityKeyPair(),
@@ -73,6 +73,7 @@ SessionCipher.prototype = {
               keys[0], buffer, keys[2].slice(0, 16)
           ).then(function(ciphertext) {
               msg.ciphertext = ciphertext;
+              msg = protobuf.WhisperMessage.encode(msg);
               var encodedMsg = msg.toArrayBuffer();
 
               var macInput = new Uint8Array(encodedMsg.byteLength + 33*2 + 1);
@@ -95,7 +96,7 @@ SessionCipher.prototype = {
           }.bind(this));
       }.bind(this)).then(function(message) {
           if (session.pendingPreKey !== undefined) {
-              var preKeyMsg = new protobuf.PreKeyWhisperMessage();
+            var preKeyMsg = {};
               preKeyMsg.identityKey = util.toArrayBuffer(ourIdentityKey.pubKey);
               preKeyMsg.registrationId = myRegistrationId;
 
@@ -104,7 +105,7 @@ SessionCipher.prototype = {
               preKeyMsg.signedPreKeyId = session.pendingPreKey.signedKeyId;
 
               preKeyMsg.message = message;
-              var result = String.fromCharCode((3 << 4) | 3) + util.toString(preKeyMsg.encode());
+              var result = String.fromCharCode((3 << 4) | 3) + util.toString(preKeyMsg.encode(preKeyMsg));
               return {
                   type           : 3,
                   body           : result,
