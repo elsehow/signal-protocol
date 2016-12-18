@@ -113,8 +113,9 @@ describe('Integration test', function() {
 
   it('can encrypt + decrypt a long message', function (done) {
       bobAliceSessionCiphers()
-          .then(function ([ aliceSessionCipher, bobSessionCipher ]) {
-        // var plaintext = "Hello world";
+          .then(function (ciphers) { 
+              var aliceSessionCipher = ciphers[0]
+              var bobSessionCipher = ciphers[1]
               var plaintext = require('./long-plaintext.json').plaintext;
               var b = new Buffer(plaintext, 'utf-8');
               aliceSessionCipher.encrypt(b)
