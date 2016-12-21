@@ -186,7 +186,7 @@ sessionCipher.decryptWhisperMessage(ciphertext).then(function(plaintext) {
 
 ## Cryptography Notice
 
-This distribution includes cryptographic software. The country in which you currently reside may have restrictions on the import, possession, use, and/or re-export to another country, of encryption software. BEFORE using any encryption software, please check your country's laws, regulations and policies concerning the import, possession, or use, and re-export of encryption software, to see if this is permitted. See http://www.wassenaar.org/ for more information.
+ A number of nations restrict the use or export of cryptography. If you are potentially subject to such restrictions you should seek competent professional legal advice before attempting to develop or distribute cryptographic code.
 
 ## License
 
