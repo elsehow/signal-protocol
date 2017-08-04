@@ -6,11 +6,11 @@
   "contributors": [
     "liliakai"
   ],
-  "version": "0.0.7",
+  "version": "0.1.0",
   "main": "src/main.js",
   "license": "GPL-3.0",
   "dependencies": {
-    "bytebuffer": "^3.5.5",
+    "bytebuffer": "^5.0.1",
     "long": "^3.2.0",
     "node-webcrypto-ossl": "^1.0.30",
     "protobufjs": "5.0.1",
