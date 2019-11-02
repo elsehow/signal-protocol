@@ -10,6 +10,14 @@
 A ratcheting forward secrecy protocol that works in synchronous and
 asynchronous messaging environments.
 
+# THIS MODULE IS DEPRICATED
+
+I recommend you use [@wireapp/proteus](https://www.npmjs.com/package/@wireapp/proteus).
+
+*All code in this repository is FOR RESEARCH PURPOSES ONLY!*
+
+---
+
 This repository is forked from WhisperSystem's own [libsignal-protocol-javascript](https://github.com/WhisperSystems/libsignal-protocol-javascript) by **[@liliakai](https://github.com/liliakai)**, modified to support node and the browser. I use [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl) as a drop-in native replacement for WebCrypto API.
 
 **WARNING: This code has NOT been reviewed by an experienced cryptographer. IT IS FOR RESEARCH ONLY!!!!!**
